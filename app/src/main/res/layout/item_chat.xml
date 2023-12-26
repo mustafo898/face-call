@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:clickable="false"
+        android:focusable="false"
+        app:cardBackgroundColor="@color/grey"
+        app:cardCornerRadius="100dp"
+        android:id="@+id/m1"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/inter_medium"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:text="Hello"
+            android:id="@+id/t1"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="false"
+        android:id="@+id/m2"
+        android:focusable="false"
+        app:cardBackgroundColor="@color/purple"
+        app:cardCornerRadius="100dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp">
+
+        <TextView
+            android:maxLength="32"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/inter_medium"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:text="Hello"
+            android:id="@+id/t2"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

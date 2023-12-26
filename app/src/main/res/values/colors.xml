@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="purple">#EA156E</color>
+    <color name="grey">#E7E7E7</color>
+    <color name="green">#1FD131</color>
+    <color name="red">#F41818</color>
+    <color name="orange">#FB8800</color>
+    <color name="black_app">#232323</color>
+    <color name="settings_card_back">#121212</color>
+    <color name="violet">#7D26C0</color>
+</resources>

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_menu"
+    app:startDestination="@id/splashFragment">
+
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="dark.composer.fakecallapp.splash.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment_to_homeStartFragment"
+            app:destination="@id/homeStartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/acceptCallFragment"
+        android:name="dark.composer.fakecallapp.call.AcceptCallFragment"
+        android:label="fragment_accept_call"
+        tools:layout="@layout/fragment_accept_call">
+        <action
+            android:id="@+id/action_acceptCallFragment_to_endingCallFragment"
+            app:destination="@id/endingCallFragment"
+            app:popUpTo="@id/acceptCallFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_acceptCallFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_acceptCallFragment_to_videoAcceptFragment"
+            app:destination="@id/videoAcceptFragment" />
+        <action
+            android:id="@+id/action_acceptCallFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment" />
+        <action
+            android:id="@+id/action_acceptCallFragment_to_thanksForCallFragment"
+            app:destination="@id/thanksForCallFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="dark.composer.fakecallapp.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_callFragment"
+            app:destination="@id/callFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_videoFragment"
+            app:destination="@id/videoFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_liveFragment"
+            app:destination="@id/liveFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_webViewFragment2"
+            app:destination="@id/webViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeStartFragment"
+        android:name="dark.composer.fakecallapp.home.HomeStartFragment"
+        android:label="fragment_home_start"
+        tools:layout="@layout/fragment_home_start">
+        <action
+            android:id="@+id/action_homeStartFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_homeStartFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+        <action
+            android:id="@+id/action_homeStartFragment_to_exitFragment"
+            app:destination="@id/exitFragment"
+            app:popUpTo="@id/homeStartFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/callFragment"
+        android:name="dark.composer.fakecallapp.call.CallFragment"
+        android:label="fragment_call"
+        tools:layout="@layout/fragment_call">
+        <action
+            android:id="@+id/action_callFragment_to_acceptCallFragment"
+            app:destination="@id/acceptCallFragment" />
+        <action
+            android:id="@+id/action_callFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="dark.composer.fakecallapp.chat.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat">
+        <action
+            android:id="@+id/action_chatFragment_to_callFragment"
+            app:destination="@id/callFragment" />
+        <action
+            android:id="@+id/action_chatFragment_to_videoFragment"
+            app:destination="@id/videoFragment" />
+        <action
+            android:id="@+id/action_chatFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment" />
+        <action
+            android:id="@+id/action_chatFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/videoFragment"
+        android:name="dark.composer.fakecallapp.video.VideoFragment"
+        android:label="fragment_video"
+        tools:layout="@layout/fragment_video">
+        <action
+            android:id="@+id/action_videoFragment_to_videoAcceptFragment"
+            app:destination="@id/videoAcceptFragment" />
+        <action
+            android:id="@+id/action_videoFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:name="dark.composer.fakecallapp.contacts.ContactsFragment"
+        android:label="fragment_contacts"
+        tools:layout="@layout/fragment_contacts">
+        <action
+            android:id="@+id/action_contactsFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/videoAcceptFragment"
+        android:name="dark.composer.fakecallapp.video.VideoAcceptFragment"
+        android:label="fragment_video_accept"
+        tools:layout="@layout/fragment_video_accept">
+        <action
+            android:id="@+id/action_videoAcceptFragment_to_endingCallFragment"
+            app:destination="@id/endingCallFragment"
+            app:popUpTo="@id/videoAcceptFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_videoAcceptFragment_to_thanksForCallFragment"
+            app:destination="@id/thanksForCallFragment"
+            app:popUpTo="@id/videoAcceptFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/liveFragment"
+        android:name="dark.composer.fakecallapp.live.LiveFragment"
+        android:label="fragment_live"
+        tools:layout="@layout/fragment_live">
+        <action
+            android:id="@+id/action_liveFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+        <action
+            android:id="@+id/action_liveFragment_to_endingCallFragment"
+            app:destination="@id/endingCallFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/exitFragment"
+        android:name="dark.composer.fakecallapp.settings.ExitFragment"
+        android:label="fragment_exit"
+        tools:layout="@layout/fragment_exit">
+        <action
+            android:id="@+id/action_exitFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+        <action
+            android:id="@+id/action_exitFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/endingCallFragment"
+        android:name="dark.composer.fakecallapp.call.EndingCallFragment"
+        android:label="fragment_ending_call"
+        tools:layout="@layout/fragment_ending_call">
+        <action
+            android:id="@+id/action_endingCallFragment_to_thanksForCallFragment"
+            app:destination="@id/thanksForCallFragment"
+            app:popUpTo="@id/endingCallFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/thanksForCallFragment"
+        android:name="dark.composer.fakecallapp.call.ThanksForCallFragment"
+        android:label="fragment_thanks_for_call"
+        tools:layout="@layout/fragment_thanks_for_call">
+        <action
+            android:id="@+id/action_thanksForCallFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_thanksForCallFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment"
+            app:popUpTo="@id/thanksForCallFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_thanksForCallFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/thanksForCallFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_thanksForCallFragment_to_videoFragment"
+            app:destination="@id/videoFragment"
+            app:popUpTo="@id/thanksForCallFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_thanksForCallFragment_to_liveFragment"
+            app:destination="@id/liveFragment"
+            app:popUpTo="@id/thanksForCallFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_thanksForCallFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment"
+            app:popUpTo="@id/thanksForCallFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_thanksForCallFragment_to_callFragment"
+            app:destination="@id/callFragment"
+            app:popUpTo="@id/thanksForCallFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_thanksForCallFragment_to_chatFragment"
+            app:destination="@id/chatFragment"
+            app:popUpTo="@id/thanksForCallFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_thanksForCallFragment_to_homeFragment2"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/thanksForCallFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="dark.composer.fakecallapp.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settingsFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+
+        <action
+            android:id="@+id/action_settingsFragment_to_homeFragment"
+            app:destination="@id/webViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="dark.composer.fakecallapp.home.WebViewFragment"
+        android:label="fragment_web_view"
+        tools:layout="@layout/fragment_web_view" />
+</navigation>
