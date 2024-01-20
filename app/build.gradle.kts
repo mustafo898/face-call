@@ -62,6 +62,7 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
 
+    implementation ("com.google.code.gson:gson:2.10")
 
 //viewmodel livedata
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")

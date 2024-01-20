@@ -11,7 +11,9 @@ import dark.composer.fakecallapp.databinding.FragmentSplashBinding
 
 class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding::inflate) {
     override fun onViewCreate() {
+        showAd()
         binding.next.setOnClickListener {
+            showAd()
             navController.navigate(R.id.action_splashFragment_to_homeStartFragment)
         }
     }

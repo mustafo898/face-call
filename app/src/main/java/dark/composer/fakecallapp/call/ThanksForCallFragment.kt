@@ -50,8 +50,14 @@ class ThanksForCallFragment :
         binding.callAgain.setOnClickListener {
             val dialog = AgainDialog(requireContext()) {
                 when (it) {
-                    0 -> navController.navigate(R.id.action_thanksForCallFragment_to_chatFragment)
-                    1 -> navController.navigate(R.id.action_thanksForCallFragment_to_liveFragment)
+                    0 -> {
+                        showAd()
+                        navController.navigate(R.id.action_thanksForCallFragment_to_chatFragment)
+                    }
+                    1 -> {
+                        showAd()
+                        navController.navigate(R.id.action_thanksForCallFragment_to_liveFragment)
+                    }
                     2 -> navController.navigate(R.id.action_thanksForCallFragment_to_callFragment)
                     3 -> navController.navigate(R.id.action_thanksForCallFragment_to_videoFragment)
                 }

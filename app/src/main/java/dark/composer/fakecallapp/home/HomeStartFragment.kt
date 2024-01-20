@@ -10,8 +10,10 @@ class HomeStartFragment :
     BaseFragment<FragmentHomeStartBinding>(FragmentHomeStartBinding::inflate) {
     override fun onViewCreate() {
         binding.next.setOnClickListener {
+            showAd()
             navController.navigate(R.id.action_homeStartFragment_to_homeFragment)
         }
+
         binding.share.setOnClickListener {
             val intent = Intent()
             intent.action = Intent.ACTION_SEND
@@ -30,7 +32,7 @@ class HomeStartFragment :
             startActivity(browserIntent)
         }
         binding.exit.setOnClickListener {
-            navController.navigate(R.id.action_homeStartFragment_to_exitFragment)
+            activity?.finish()
         }
     }
 }

@@ -32,6 +32,7 @@ class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::infl
 //        }
 
         binding.game.setOnClickListener {
+            showAd()
             navController.navigate(
                 R.id.action_liveFragment_to_webViewFragment,
                 bundleOf("url" to "https://www.gamezop.com/?id=3178")
@@ -42,6 +43,7 @@ class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::infl
         changeTextWithDelay()
 
         binding.decline.setOnClickListener {
+            showAd()
             navController.navigate(R.id.action_liveFragment_to_endingCallFragment)
         }
 

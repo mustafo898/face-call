@@ -22,7 +22,7 @@ class ADDialog(
         this.count = count
         this.pos = pos
         Log.d("ssdsjfslkfsd", "getCount: ${this.count}/4")
-        binding.t3.text = "${this.count}/4"
+        binding.t3.text = "${++this.count}/4"
     }
 
     init {
@@ -32,8 +32,10 @@ class ADDialog(
 
         binding.t3.text = "${count}/4"
 
+        ++count
+
         binding.exit.setOnClickListener {
-            onItemClick.invoke(count++, pos)
+            onItemClick.invoke(count, pos)
             dismiss()
         }
 

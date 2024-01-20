@@ -31,26 +31,23 @@ class EndingCallFragment :
     private fun startHorizontalProgressAnimation() {
         Thread {
             val endTime = System.currentTimeMillis() + 3000
-            while (System.currentTimeMillis() < endTime && progressStatus < 100) {
+            while (System.currentTimeMillis() < endTime && progressStatus <= 100) {
                 progressStatus++
-                // Update the progress bar on the main thread
                 handler.post {
                     binding.linearProgress.progress = progressStatus
                 }
 
-                if (progressStatus == 99) {
-                    handler.post {
-                        navController.navigate(R.id.action_endingCallFragment_to_thanksForCallFragment)
-                    }
-                }
-
-                // Delay for a short duration to mimic progress
                 try {
-                    Thread.sleep(30) // Adjust this value for desired animation speed
+                    Thread.sleep(30)
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
                 }
             }
+//            if (progressStatus == 100) {
+                handler.post {
+                    navController.navigate(R.id.action_endingCallFragment_to_thanksForCallFragment)
+                }
+//            }
         }.start()
     }
 }

@@ -2,38 +2,53 @@ package dark.composer.fakecallapp.home
 
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
-import android.widget.Toast
 import androidx.core.os.bundleOf
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.rewarded.RewardedAd
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import dark.composer.fakecallapp.BaseFragment
 import dark.composer.fakecallapp.R
+import dark.composer.fakecallapp.contacts.adapter.ContactModel
 import dark.composer.fakecallapp.databinding.FragmentHomeBinding
+import dark.composer.fakecallapp.utl.EncryptedSharedPref
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
-    private var rewardedAd: RewardedAd? = null
+
+    private lateinit var sharedPref: EncryptedSharedPref
 
     override fun onViewCreate() {
 
+        sharedPref = EncryptedSharedPref(requireContext())
+
+        val list = mutableListOf<ContactModel>()
+        list.add(ContactModel("Character 1", "+1248754248", 0, true, false))
+        list.add(ContactModel("Character 2", "+1248754248", 0, true, false))
+        list.add(ContactModel("Character 3", "+1248754248", 0, false, false))
+        list.add(ContactModel("Character 4", "+1248754248", 0, false, false))
+        list.add(ContactModel("Character 5", "+1248754248", 0, false, false))
+        list.add(ContactModel("Character 6", "+1248754248", 0, false, false))
+
+        sharedPref.setList(list)
+
         loadRewardedAd()
+
+        showAd()
 
         binding.call.setOnClickListener {
             showAd()
             navController.navigate(R.id.action_homeFragment_to_callFragment)
         }
         binding.videoCall.setOnClickListener {
+            showAd()
             navController.navigate(R.id.action_homeFragment_to_videoFragment)
         }
         binding.live.setOnClickListener {
+            showAd()
             navController.navigate(R.id.action_homeFragment_to_liveFragment)
         }
         binding.chat.setOnClickListener {
+            showAd()
             navController.navigate(R.id.action_homeFragment_to_chatFragment)
         }
         binding.characters.setOnClickListener {
+            showAd()
             navController.navigate(R.id.action_homeFragment_to_contactsFragment)
         }
 
@@ -54,47 +69,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             startActivity(browserIntent)
         }
         binding.game.setOnClickListener {
+            showAd()
             navController.navigate(
                 R.id.action_homeFragment_to_webViewFragment,
                 bundleOf("url" to "https://www.gamezop.com/?id=3178")
             )
-        }
-    }
-
-
-    private fun loadRewardedAd() {
-        val adRequest = AdRequest.Builder().build()
-
-        Log.e("FABKFA", "loadRewardedAd: ${rewardedAd?.adUnitId}")
-        RewardedAd.load(requireActivity(),
-            "ca-app-pub-7173802867165820/3073425903",
-            adRequest,
-            object : RewardedAdLoadCallback() {
-                override fun onAdLoaded(ad: RewardedAd) {
-                    rewardedAd = ad
-                    Toast.makeText(requireContext(), "ad's loaded", Toast.LENGTH_SHORT).show()
-                    Log.e("FABKFA", "onAdFailedToLoad: {ad's loaded}")
-                }
-
-                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                    // Handle the error
-                    Toast.makeText(requireContext(), "failed to load", Toast.LENGTH_SHORT).show()
-                    Log.e("FABKFA", "onAdFailedToLoad: ${loadAdError.cause}")
-                    Log.e("FABKFA", "onAdFailedToLoad: ${loadAdError.message}")
-                }
-            })
-    }
-
-    private fun showAd() {
-        rewardedAd?.let {
-            it.show(requireActivity()) { rewardItem ->
-                // Handle the reward
-                Toast.makeText(requireContext(), "ad's loaded", Toast.LENGTH_SHORT).show()
-            }
-        } ?: run {
-            // Ad not loaded, handle accordingly
-            loadRewardedAd()
-            Toast.makeText(requireContext(), "ad not loaded", Toast.LENGTH_SHORT).show()
         }
     }
 }
