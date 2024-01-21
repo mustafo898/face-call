@@ -1,7 +1,6 @@
 package dark.composer.fakecallapp.video
 
 import android.hardware.Camera
-import android.net.Uri
 import android.view.SurfaceHolder
 import dark.composer.fakecallapp.BaseFragment
 import dark.composer.fakecallapp.R
@@ -18,12 +17,13 @@ class VideoAcceptFragment :
         setupSurfaceHolder()
 
         binding.decline.setOnClickListener {
-            navController.navigate(R.id.action_videoAcceptFragment_to_endingCallFragment )
+            navController.navigate(R.id.action_videoAcceptFragment_to_endingCallFragment)
         }
 
-        val uri = Uri.parse("android.resource://" + activity?.packageName + "/" + R.raw.vd_1)
+        val uri = "android.resource://" + requireActivity().packageName + "/" + R.raw.video22
 
-        binding.video.setVideoURI(uri)
+        binding.video.setVideoPath(uri)
+
         binding.video.start()
         binding.video.setOnPreparedListener {
             it.isLooping = true

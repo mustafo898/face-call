@@ -4,6 +4,7 @@ import android.Manifest.permission.CAMERA
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.hardware.Camera
+import android.media.MediaPlayer
 import android.os.Build
 import android.view.SurfaceHolder
 import androidx.core.app.ActivityCompat
@@ -19,8 +20,15 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(FragmentVideoBinding::i
     private var surfaceHolder: SurfaceHolder? = null
     private var camera: Camera? = null
     private val neededPermissions = arrayOf(CAMERA)
+    private lateinit var mediaPlayer: MediaPlayer
 
     override fun onViewCreate() {
+        mediaPlayer = MediaPlayer.create(requireContext(), R.raw.ringtone)
+
+        if (!mediaPlayer.isPlaying) {
+            mediaPlayer.start()
+            mediaPlayer.isLooping = true
+        }
 
         val result = checkPermission()
         if (result) {
@@ -28,16 +36,23 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(FragmentVideoBinding::i
         }
 
         binding.accept.setOnClickListener {
+            mediaPlayer.release()
             navController.navigate(R.id.action_videoFragment_to_videoAcceptFragment)
         }
         binding.decline.setOnClickListener {
+            mediaPlayer.release()
             navController.navigate(R.id.action_videoFragment_to_contactsFragment)
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+    }
+
     @SuppressLint("MissingSuperCall")
     override fun onDetach() {
-
+        mediaPlayer.release()
     }
 
     private fun checkPermission(): Boolean {
@@ -45,8 +60,10 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(FragmentVideoBinding::i
         if (currentAPIVersion >= Build.VERSION_CODES.M) {
             val permissionsNotGranted = ArrayList<String>()
             for (permission in neededPermissions) {
-                if (ContextCompat.checkSelfPermission(requireActivity(), permission)
-                    != PackageManager.PERMISSION_GRANTED
+                if (ContextCompat.checkSelfPermission(
+                        requireActivity(),
+                        permission
+                    ) != PackageManager.PERMISSION_GRANTED
                 ) {
                     permissionsNotGranted.add(permission)
                 }
@@ -54,11 +71,9 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(FragmentVideoBinding::i
             if (permissionsNotGranted.size > 0) {
                 var shouldShowAlert = false
                 for (permission in permissionsNotGranted) {
-                    shouldShowAlert =
-                        ActivityCompat.shouldShowRequestPermissionRationale(
-                            requireActivity(),
-                            permission
-                        )
+                    shouldShowAlert = ActivityCompat.shouldShowRequestPermissionRationale(
+                        requireActivity(), permission
+                    )
                 }
                 val arr = arrayOfNulls<String>(permissionsNotGranted.size)
                 val permissions = permissionsNotGranted.toArray(arr)
@@ -78,9 +93,7 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(FragmentVideoBinding::i
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
     ) {
         when (requestCode) {
             21 -> {

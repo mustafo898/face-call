@@ -1,18 +1,23 @@
 package dark.composer.fakecallapp.contacts.adapter
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import dark.composer.fakecallapp.R
 import dark.composer.fakecallapp.databinding.ItemContactsBinding
 import dark.composer.fakecallapp.gone
+import dark.composer.fakecallapp.utl.EncryptedSharedPref
 import dark.composer.fakecallapp.visible
 
-class ContactsAdapter : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
+
+class ContactsAdapter(val context: Context) :
+    RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
 
     private var list = ArrayList<ContactModel>()
 
@@ -41,21 +46,24 @@ class ContactsAdapter : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
 
     private var selected = -1
 
+    val sharedPref: EncryptedSharedPref = EncryptedSharedPref(context)
+
     inner class ViewHolder(private val binding: ItemContactsBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
 
         @SuppressLint("SetTextI18n")
         @RequiresApi(Build.VERSION_CODES.O)
         fun bindData(data: ContactModel) {
+            var c = sharedPref.get(layoutPosition.toString(), 0)
             binding.name.text = data.name
             binding.number.text = data.number
-            val m = data.count + 1
+            val m = c + 1
             binding.count.text = m.toString()
-
-
+            c
             binding.tick.setImageResource(if (data.clicked) R.drawable.tick else R.drawable.round)
 
-            if (data.count <= 4 && data.isOpen) {
+            if (c <= 4 && data.isOpen) {
                 binding.l3.gone()
                 binding.tick.visible()
             } else {
@@ -64,6 +72,7 @@ class ContactsAdapter : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
             }
 
             binding.m2.setOnClickListener {
+                Toast.makeText(binding.root.context, "$layoutPosition", Toast.LENGTH_SHORT).show()
                 if (data.isOpen) {
 
                     when (selected) {
@@ -84,21 +93,24 @@ class ContactsAdapter : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
                         }
                     }
 
-                    itemClickListener?.invoke(true, data.count, layoutPosition)
+                    itemClickListener?.invoke(true, c, layoutPosition)
 
                 } else {
-                    data.count++
-                    if (data.count == 4) {
+
+//                    sharedPref.save(
+//                        layoutPosition.toString(),
+//                        c + 1
+//                    )
+                    if (c >= 4) {
                         data.isOpen = true
                     }
-                    val f = data.count - 1
-                    Log.d("sdfslkjslfjsldfkjs", "bindData: $f")
-                    itemClickListener?.invoke(false, f, layoutPosition)
+                    Log.d("sdfslkjslfjsldfkjs", "bindData: $c")
+                    itemClickListener?.invoke(false, c, layoutPosition)
                 }
                 notifyDataSetChanged()
             }
 
-            binding.count.text = "${data.count}/4"
+            binding.count.text = "${c}/4"
         }
     }
 

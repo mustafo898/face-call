@@ -10,19 +10,24 @@ import dark.composer.fakecallapp.databinding.AddDialogBinding
 
 @SuppressLint("SetTextI18n")
 class ADDialog(
-    private val context: Context,
-    private val onItemClick: ((Int, Int) -> Unit)
+    private val context: Context
 ) : AlertDialog(context) {
     private val binding = AddDialogBinding.inflate(layoutInflater)
 
     private var count = 0
     private var pos = 0
 
+    interface DeleteChekListener {
+        fun onDeleteItem(count: Int, pos: Int) // Change the data type as needed
+    }
+
+    var listener: DeleteChekListener? = null
+
     fun getCount(count: Int, pos: Int) {
         this.count = count
         this.pos = pos
         Log.d("ssdsjfslkfsd", "getCount: ${this.count}/4")
-        binding.t3.text = "${++this.count}/4"
+        binding.t3.text = "${this.count}/4"
     }
 
     init {
@@ -32,15 +37,14 @@ class ADDialog(
 
         binding.t3.text = "${count}/4"
 
-        ++count
-
         binding.exit.setOnClickListener {
-            onItemClick.invoke(count, pos)
+//            onItemClick.invoke(count, pos)
             dismiss()
         }
 
         binding.ad.setOnClickListener {
-            onItemClick.invoke(count++, pos)
+            listener?.onDeleteItem(count, pos)
+//            onItemClick.invoke(count++, pos)
             dismiss()
         }
     }

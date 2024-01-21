@@ -18,15 +18,48 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         sharedPref = EncryptedSharedPref(requireContext())
 
         val list = mutableListOf<ContactModel>()
-        list.add(ContactModel("Character 1", "+1248754248", 0, true, false))
-        list.add(ContactModel("Character 2", "+1248754248", 0, true, false))
-        list.add(ContactModel("Character 3", "+1248754248", 0, false, false))
-        list.add(ContactModel("Character 4", "+1248754248", 0, false, false))
-        list.add(ContactModel("Character 5", "+1248754248", 0, false, false))
-        list.add(ContactModel("Character 6", "+1248754248", 0, false, false))
+        list.add(
+            ContactModel(
+                "Character 1",
+                "+1248754248",
+                sharedPref.get(sharedPref.Key1, 0),
+                true,
+                false
+            )
+        )
+        list.add(
+            ContactModel(
+                "Character 2", "+1248754248", sharedPref.get(sharedPref.Key2, 0), true, false
+            )
+        )
+        list.add(
+            ContactModel(
+                "Character 3", "+1248754248", sharedPref.get(sharedPref.Key3, 0), false, false
+            )
+        )
+        list.add(
+            ContactModel(
+                "Character 4", "+1248754248", sharedPref.get(sharedPref.Key4, 0), false, false
+            )
+        )
+        list.add(
+            ContactModel(
+                "Character 5", "+1248754248", sharedPref.get(sharedPref.Key5, 0), false, false
+            )
+        )
+        list.add(
+            ContactModel(
+                "Character 6", "+1248754248", sharedPref.get(sharedPref.Key6, 0), false, false
+            )
+        )
 
         sharedPref.setList(list)
 
+//        lifecycleScope.launch {
+//            list.forEachIndexed { index, contactModel ->
+//                sharedPref.save(index.toString(), contactModel.count)
+//            }
+//        }
         loadRewardedAd()
 
         showAd()
