@@ -45,7 +45,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
         contactAdapter.setItemClickListener { isOpen, count, pos, limit, last ->
             if (!isOpen) {
                 dialog = ADDialog(requireContext(), count, limit) { count1 ->
-                    showRewardAd(pos, count)
+                    showRewardAd(pos, count1)
                 }
                 dialog.show()
             } else {
@@ -92,7 +92,6 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
                 ad.show(requireActivity()) { rewardItem ->
 
                     list[pos].count = count
-                    Log.d("sdsdfjskdfwewwe", "showRewardAd: ${list[pos]}")
                     sharedPref.setList(list)
                     contactAdapter.update(count, pos)
                     rewardedAd = null
