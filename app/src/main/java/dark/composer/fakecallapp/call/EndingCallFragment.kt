@@ -1,17 +1,18 @@
 package dark.composer.fakecallapp.call
 
+import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
 import dark.composer.fakecallapp.BaseFragment
 import dark.composer.fakecallapp.R
 import dark.composer.fakecallapp.databinding.FragmentEndingCallBinding
+import dark.composer.fakecallapp.gone
+import dark.composer.fakecallapp.visible
 
 
 class EndingCallFragment :
     BaseFragment<FragmentEndingCallBinding>(FragmentEndingCallBinding::inflate) {
 
-    private val totalProgress = 100
-    private val totalTimeInMillis = 3000L // 3 seconds
     private var progressStatus = 0
     private lateinit var handler: Handler
 
@@ -28,6 +29,7 @@ class EndingCallFragment :
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun startHorizontalProgressAnimation() {
         Thread {
             val endTime = System.currentTimeMillis() + 3000
@@ -35,6 +37,7 @@ class EndingCallFragment :
                 progressStatus++
                 handler.post {
                     binding.linearProgress.progress = progressStatus
+                    binding.progress.text = "$progressStatus%"
                 }
 
                 try {
@@ -43,11 +46,9 @@ class EndingCallFragment :
                     e.printStackTrace()
                 }
             }
-//            if (progressStatus == 100) {
-                handler.post {
-                    navController.navigate(R.id.action_endingCallFragment_to_thanksForCallFragment)
-                }
-//            }
+            handler.post {
+                navController.navigate(R.id.thanksForCallFragment)
+            }
         }.start()
     }
 }

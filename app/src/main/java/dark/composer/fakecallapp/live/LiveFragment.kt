@@ -8,14 +8,19 @@ import android.os.Handler
 import android.view.SurfaceHolder
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import dark.composer.fakecallapp.BaseFragment
 import dark.composer.fakecallapp.R
 import dark.composer.fakecallapp.databinding.FragmentLiveBinding
+import dark.composer.fakecallapp.live.adapter.LiveAdapter
+import dark.composer.fakecallapp.live.adapter.LiveModel
 import java.io.IOException
 
 class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::inflate),
     SurfaceHolder.Callback {
+
+    private val liveAdapter by lazy {
+        LiveAdapter(requireContext())
+    }
 
     private var surfaceHolder: SurfaceHolder? = null
     private var camera: Camera? = null
@@ -31,20 +36,43 @@ class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::infl
         setupSurfaceHolder()
 //        }
 
-        binding.game.setOnClickListener {
-            showAd()
-            navController.navigate(
-                R.id.action_liveFragment_to_webViewFragment,
-                bundleOf("url" to "https://www.gamezop.com/?id=3178")
-            )
-        }
         handler = Handler()
+
+        binding.rv.adapter = liveAdapter
+
+        val list = ArrayList<LiveModel>()
+
+        list.add(LiveModel("Cool that I found this!", R.drawable.main, "Bob"))
+        list.add(LiveModel("Hope to see you again soon!", R.drawable.c2, "Bugs"))
+        list.add(LiveModel("How are you?", R.drawable.c3, "Rocky"))
+        list.add(LiveModel("I've heard so much about you", R.drawable.c4, "Luna"))
+        list.add(LiveModel("What's up?", R.drawable.main, "Bob"))
+        list.add(LiveModel("Thanks for having me", R.drawable.c2, "Bugs"))
+        list.add(LiveModel("How is everything?", R.drawable.c3, "Rocky"))
+        list.add(LiveModel("Hi", R.drawable.c4, "Luna"))
+
+
+//        lifecycleScope.launch {
+//            delay(2000)
+//            list.forEach {
+//                lifecycleScope.launch {
+//                    liveAdapter.add(it)
+//                    delay(2000)
+//                }
+//            }
+//        }
+
+
+        binding.game.setOnClickListener {
+            game()
+        }
+        addItemsWithDelay(list, 0)
 
         changeTextWithDelay()
 
         binding.decline.setOnClickListener {
-            showAd()
-            navController.navigate(R.id.action_liveFragment_to_endingCallFragment)
+//            showAd()
+            navController.navigate(R.id.endingCallFragment)
         }
 
         val handler = Handler()
@@ -61,6 +89,23 @@ class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::infl
                 handler.postDelayed(this, 1000)
             }
         })
+    }
+
+    private fun addItemsWithDelay(items: List<LiveModel>, index: Int) {
+        if (index < items.size) {
+            // Add item to the list after 3 seconds
+            handler.postDelayed({
+                val newItem = items[index]
+                liveAdapter.add(newItem)
+
+                // Print the updated list
+
+                // Schedule the next item after the delay
+                addItemsWithDelay(items, index + 1)
+                binding.rv.smoothScrollToPosition(items.lastIndex)
+
+            }, 2000)
+        }
     }
 
     override fun onDestroy() {
@@ -87,8 +132,9 @@ class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::infl
         if (currentAPIVersion >= Build.VERSION_CODES.M) {
             val permissionsNotGranted = ArrayList<String>()
             for (permission in neededPermissions) {
-                if (ContextCompat.checkSelfPermission(requireActivity(), permission)
-                    != PackageManager.PERMISSION_GRANTED
+                if (ContextCompat.checkSelfPermission(
+                        requireActivity(), permission
+                    ) != PackageManager.PERMISSION_GRANTED
                 ) {
                     permissionsNotGranted.add(permission)
                 }
@@ -96,11 +142,9 @@ class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::infl
             if (permissionsNotGranted.size > 0) {
                 var shouldShowAlert = false
                 for (permission in permissionsNotGranted) {
-                    shouldShowAlert =
-                        ActivityCompat.shouldShowRequestPermissionRationale(
-                            requireActivity(),
-                            permission
-                        )
+                    shouldShowAlert = ActivityCompat.shouldShowRequestPermissionRationale(
+                        requireActivity(), permission
+                    )
                 }
                 val arr = arrayOfNulls<String>(permissionsNotGranted.size)
                 val permissions = permissionsNotGranted.toArray(arr)
@@ -120,9 +164,7 @@ class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::infl
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
     ) {
         when (requestCode) {
             21 -> {

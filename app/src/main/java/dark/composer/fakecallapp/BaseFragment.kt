@@ -1,20 +1,18 @@
 package dark.composer.fakecallapp
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.rewarded.RewardedAd
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 
 typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
@@ -25,13 +23,11 @@ abstract class BaseFragment<VB : ViewBinding>(
     val binding get() = _binding!!
     lateinit var navController: NavController
     private var isUseBackPress = true
-
+    private var interstitialAd: InterstitialAd? = null
     private var rewardedAd: RewardedAd? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         _binding = inflate.invoke(inflater, container, false)
         return binding.root
@@ -50,46 +46,119 @@ abstract class BaseFragment<VB : ViewBinding>(
                 return@setOnKeyListener isUseBackPress
             } else return@setOnKeyListener false
         }
+
+//        loadInterAd()
     }
+
+//    private fun show() {
+//        if (interstitialAd != null) {
+//            Toast.makeText(requireActivity(), "load", Toast.LENGTH_SHORT).show()
+//            interstitialAd!!.show(requireActivity())
+//            interstitialAd!!.fullScreenContentCallback = object : FullScreenContentCallback(){
+//                override fun onAdClicked() {
+//                    Log.d("skhdgfksjdwewiur", "onAdClicked: click")
+//                    super.onAdClicked()
+//                }
+//
+//                override fun onAdDismissedFullScreenContent() {
+//                    Log.d("skhdgfksjdwewiur", "onAdDismissedFullScreenContent: onAdDismissedFullScreenContent")
+//                    interstitialAd = null
+//                }
+//
+//                override fun onAdFailedToShowFullScreenContent(p0: AdError) {
+//                    Log.d("skhdgfksjdwewiur", "onAdFailedToShowFullScreenContent: ${p0.message}\n${p0.cause}\n${p0.code}\n")
+//                    interstitialAd = null
+//                }
+//
+//                override fun onAdImpression() {
+//                    Log.d("skhdgfksjdwewiur", "onAdImpression: onAdImpression")
+//                    super.onAdImpression()
+//                }
+//
+//                override fun onAdShowedFullScreenContent() {
+//                    Log.d("skhdgfksjdwewiur", "onAdShowedFullScreenContent: onAdShowedFullScreenContent")
+//                    super.onAdShowedFullScreenContent()
+//                }
+//            }
+//            interstitialAd = null
+//        } else {
+//            loadInterAd()
+//            Toast.makeText(requireContext(), "null", Toast.LENGTH_SHORT).show()
+//        }
+//    }
+
+//    private fun loadInterAd() {
+//        val adRequest = AdRequest.Builder().build()
+//
+//        InterstitialAd.load(requireActivity(),
+//            "ca-app-pub-3940256099942544/1033173712",
+//            adRequest,
+//            object : InterstitialAdLoadCallback() {
+//                override fun onAdLoaded(p0: InterstitialAd) {
+//                    interstitialAd = p0
+//                }
+//
+//                override fun onAdFailedToLoad(p0: LoadAdError) {
+//                    Log.d("rrttyyyuoopw", "onAdFailedToLoad: ${p0.message}\n${p0.cause}")
+//                }
+//            })
+//
+//    }
 
     open fun onBackPressed() {
         isUseBackPress = false
     }
 
-    fun loadRewardedAd() {
-        val adRequest = AdRequest.Builder().build()
-
-        Log.e("FABKFA", "loadRewardedAd: ${rewardedAd?.adUnitId}")
-        RewardedAd.load(requireActivity(),
-            "ca-app-pub-7173802867165820/3073425903",
-            adRequest,
-            object : RewardedAdLoadCallback() {
-                override fun onAdLoaded(ad: RewardedAd) {
-                    rewardedAd = ad
-                    Toast.makeText(requireContext(), "ad's loaded", Toast.LENGTH_SHORT).show()
-                    Log.e("FABKFA", "onAdFailedToLoad: {ad's loaded}")
-                }
-
-                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                    // Handle the error
-                    Toast.makeText(requireContext(), "failed to load", Toast.LENGTH_SHORT).show()
-                    Log.e("FABKFA", "onAdFailedToLoad: ${loadAdError.cause}")
-                    Log.e("FABKFA", "onAdFailedToLoad: ${loadAdError.message}")
-                }
-            })
+    fun share() {
+        val intent = Intent()
+        intent.action = Intent.ACTION_SEND
+        intent.putExtra(Intent.EXTRA_TEXT, "Hey Check out this Great app:")
+        intent.type = "text/plain"
+        startActivity(Intent.createChooser(intent, "Share To:"))
     }
 
-    fun showAd() {
-        rewardedAd?.let {
-            it.show(requireActivity()) { rewardItem ->
-                // Handle the reward
-                Toast.makeText(requireContext(), "ad's loaded", Toast.LENGTH_SHORT).show()
-            }
-        } ?: run {
-            // Ad not loaded, handle accordingly
-            loadRewardedAd()
-            Toast.makeText(requireContext(), "ad not loaded", Toast.LENGTH_SHORT).show()
+    fun rate() {
+        var url = "https://play.google.com/store/apps/details?id=com.fakecallpoliceapplab"
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "http://$url"
         }
+
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(browserIntent)
+    }
+
+    fun privacy() {
+        val googleUri = Uri.parse("https://sites.google.com/view/fakecallpolicyalvarez/home")
+        val googleIntent = Intent(Intent.ACTION_VIEW, googleUri)
+        startActivity(googleIntent)
+    }
+
+    fun license() {
+        val googleUri = Uri.parse("https://creativecommons.org/publicdomain/zero/1.0/")
+        val googleIntent = Intent(Intent.ACTION_VIEW, googleUri)
+        startActivity(googleIntent)
+    }
+
+
+    fun game() {
+        var url = "https://www.gamezop.com/?id=3178"
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "http://$url"
+        }
+
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(browserIntent)
+    }
+
+    fun moreGame() {
+        var url =
+            "https://play.google.com/store/apps/developer?id=Fake+Call+Chat+Pranks+by+AMYMOT+Dev"
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "http://$url"
+        }
+
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(browserIntent)
     }
 
     abstract fun onViewCreate()

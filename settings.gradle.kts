@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Fake Call App"
+rootProject.name = "Dog Fake Video Call"
 include(":app")
  

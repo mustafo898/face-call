@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import dark.composer.fakecallapp.BaseFragment
 import dark.composer.fakecallapp.R
 import dark.composer.fakecallapp.databinding.FragmentVideoBinding
+import dark.composer.fakecallapp.utl.EncryptedSharedPref
 import java.io.IOException
 
 class VideoFragment : BaseFragment<FragmentVideoBinding>(FragmentVideoBinding::inflate),
@@ -23,7 +24,17 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(FragmentVideoBinding::i
     private lateinit var mediaPlayer: MediaPlayer
 
     override fun onViewCreate() {
-        mediaPlayer = MediaPlayer.create(requireContext(), R.raw.ringtone)
+        mediaPlayer = MediaPlayer.create(requireContext(), R.raw.video_call_bell)
+
+        val sharedPref = EncryptedSharedPref(requireContext())
+
+        sharedPref.getList().forEachIndexed { i, s ->
+            if (s.isOpen) {
+                binding.image.setImageDrawable(ContextCompat.getDrawable(requireContext(), s.image))
+                binding.name.text = s.name
+                binding.number.text = s.number
+            }
+        }
 
         if (!mediaPlayer.isPlaying) {
             mediaPlayer.start()
@@ -37,11 +48,11 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(FragmentVideoBinding::i
 
         binding.accept.setOnClickListener {
             mediaPlayer.release()
-            navController.navigate(R.id.action_videoFragment_to_videoAcceptFragment)
+            navController.navigate(R.id.videoAcceptFragment)
         }
         binding.decline.setOnClickListener {
             mediaPlayer.release()
-            navController.navigate(R.id.action_videoFragment_to_contactsFragment)
+            navController.navigate(R.id.contactsFragment)
         }
     }
 
@@ -61,8 +72,7 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(FragmentVideoBinding::i
             val permissionsNotGranted = ArrayList<String>()
             for (permission in neededPermissions) {
                 if (ContextCompat.checkSelfPermission(
-                        requireActivity(),
-                        permission
+                        requireActivity(), permission
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
                     permissionsNotGranted.add(permission)

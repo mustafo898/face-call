@@ -76,6 +76,7 @@ dependencies {
 
     //noinspection RiskyLibrary
     implementation("com.google.android.gms:play-services-ads:22.6.0")
+//    implementation ("com.google.firebase:firebase-ads:10.2.4")
 
     implementation("androidx.camera:camera-camera2:1.1.0")
     implementation("androidx.camera:camera-lifecycle:1.1.0")

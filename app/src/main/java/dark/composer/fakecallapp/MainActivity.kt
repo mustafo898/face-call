@@ -14,11 +14,15 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.rewarded.RewardedAd
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import dark.composer.fakecallapp.contacts.dialog.ADDialog
 import dark.composer.fakecallapp.databinding.ActivityMainBinding
 
 
@@ -27,8 +31,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var navHostFragment: NavHostFragment
     private val neededPermissions = arrayOf(Manifest.permission.CAMERA)
-    private var rewardedAd: RewardedAd? = null
     private var TAG = "Main_Activity_"
+    private var interstitialAd: InterstitialAd? = null
+    private var isLoading = false
+    private var isError = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         val adRequest: AdRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
 
-        loadRewardedAd()
+        loadInterAd()
 
         checkPermission()
 
@@ -56,50 +62,80 @@ class MainActivity : AppCompatActivity() {
 
         navController = navHostFragment.findNavController()
 
-//        navController.addOnDestinationChangedListener { _, destination, _ ->
-//        }
-
         navController.enableOnBackPressed(true)
-    }
 
-    private fun loadRewardedAd() {
-        val adRequest = AdRequest.Builder().build()
-
-        Log.e(TAG, "loadRewardedAd: ${rewardedAd?.adUnitId}")
-        RewardedAd.load(
-            this,
-            rewardedAd?.adUnitId ?: "",
-            adRequest,
-            object : RewardedAdLoadCallback() {
-                override fun onAdLoaded(ad: RewardedAd) {
-                    rewardedAd = ad
-                }
-
-                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                    // Handle the error
-                }
-            }
-        )
-        showAd()
-    }
-
-    private fun showAd() {
-        rewardedAd?.let {
-            it.show(this) { rewardItem ->
-                // Handle the reward
-            }
-        } ?: run {
-            // Ad not loaded, handle accordingly
+        navController.addOnDestinationChangedListener { _, destination, argument ->
+            if (destination.id != R.id.splashFragment && destination.id != R.id.homeStartFragment) show()
         }
     }
+
+    private fun show() {
+        if (interstitialAd != null) {
+            interstitialAd!!.show(this)
+            interstitialAd!!.fullScreenContentCallback = object : FullScreenContentCallback(){
+                override fun onAdClicked() {
+                    Log.d("skhdgfksjdwewiur", "onAdClicked: click")
+                    super.onAdClicked()
+                }
+
+                override fun onAdDismissedFullScreenContent() {
+                    Log.d("skhdgfksjdwewiur", "onAdDismissedFullScreenContent: onAdDismissedFullScreenContent")
+                    interstitialAd = null
+                }
+
+                override fun onAdFailedToShowFullScreenContent(p0: AdError) {
+                    Log.d("skhdgfksjdwewiur", "onAdFailedToShowFullScreenContent: ${p0.message}\n${p0.cause}\n${p0.code}\n")
+                    interstitialAd = null
+                }
+
+                override fun onAdImpression() {
+                    Log.d("skhdgfksjdwewiur", "onAdImpression: onAdImpression")
+                    super.onAdImpression()
+                }
+
+                override fun onAdShowedFullScreenContent() {
+                    Log.d("skhdgfksjdwewiur", "onAdShowedFullScreenContent: onAdShowedFullScreenContent")
+                    super.onAdShowedFullScreenContent()
+                }
+            }
+            interstitialAd = null
+        } else {
+            loadInterAd()
+        }
+    }
+
+    private fun loadInterAd() {
+        val adRequest = AdRequest.Builder().build()
+
+        isLoading = true
+
+        InterstitialAd.load(this,
+            "ca-app-pub-3940256099942544/1033173712",
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(p0: InterstitialAd) {
+                    interstitialAd = p0
+                    isLoading = false
+                }
+
+                override fun onAdFailedToLoad(p0: LoadAdError) {
+                    isError = true
+                    Log.d("rrttyyyuoopw", "onAdFailedToLoad: ${p0.message}\n${p0.cause}")
+                }
+            })
+
+    }
+
 
     private fun checkPermission(): Boolean {
         val currentAPIVersion = Build.VERSION.SDK_INT
         if (currentAPIVersion >= Build.VERSION_CODES.M) {
             val permissionsNotGranted = ArrayList<String>()
             for (permission in neededPermissions) {
-                if (ContextCompat.checkSelfPermission(this, permission)
-                    != PackageManager.PERMISSION_GRANTED
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        permission
+                    ) != PackageManager.PERMISSION_GRANTED
                 ) {
                     permissionsNotGranted.add(permission)
                 }
@@ -107,11 +143,9 @@ class MainActivity : AppCompatActivity() {
             if (permissionsNotGranted.size > 0) {
                 var shouldShowAlert = false
                 for (permission in permissionsNotGranted) {
-                    shouldShowAlert =
-                        ActivityCompat.shouldShowRequestPermissionRationale(
-                            this,
-                            permission
-                        )
+                    shouldShowAlert = ActivityCompat.shouldShowRequestPermissionRationale(
+                        this, permission
+                    )
                 }
                 val arr = arrayOfNulls<String>(permissionsNotGranted.size)
                 val permissions = permissionsNotGranted.toArray(arr)
@@ -131,9 +165,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
     ) {
         when (requestCode) {
             21 -> {

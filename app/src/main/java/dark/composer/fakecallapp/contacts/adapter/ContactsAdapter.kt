@@ -3,10 +3,8 @@ package dark.composer.fakecallapp.contacts.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import dark.composer.fakecallapp.R
@@ -16,15 +14,13 @@ import dark.composer.fakecallapp.utl.EncryptedSharedPref
 import dark.composer.fakecallapp.visible
 
 
-class ContactsAdapter(val context: Context) :
-    RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
+class ContactsAdapter(val context: Context) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
 
     private var list = ArrayList<ContactModel>()
 
-    private var itemClickListener: ((Boolean, Int, Int) -> Unit)? =
-        null
+    private var itemClickListener: ((Boolean, Int, Int, Int,Int) -> Unit)? = null
 
-    fun setItemClickListener(f: (Boolean, Int, Int) -> Unit) {
+    fun setItemClickListener(f: (Boolean, Int, Int, Int,Int) -> Unit) {
         itemClickListener = f
     }
 
@@ -51,75 +47,70 @@ class ContactsAdapter(val context: Context) :
     inner class ViewHolder(private val binding: ItemContactsBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-
         @SuppressLint("SetTextI18n")
         @RequiresApi(Build.VERSION_CODES.O)
         fun bindData(data: ContactModel) {
-            var c = sharedPref.get(layoutPosition.toString(), 0)
             binding.name.text = data.name
             binding.number.text = data.number
-            val m = c + 1
-            binding.count.text = m.toString()
-            c
-            binding.tick.setImageResource(if (data.clicked) R.drawable.tick else R.drawable.round)
+            binding.count.text = data.count.toString()
+            binding.tick.setImageResource(if (data.selected) R.drawable.tick else R.drawable.round)
 
-            if (c <= 4 && data.isOpen) {
+            binding.image.setImageResource(data.image)
+
+            if (data.selected) selected = layoutPosition
+
+            if (data.count >= data.limit) {
                 binding.l3.gone()
                 binding.tick.visible()
+                data.isOpen = true
             } else {
                 binding.tick.gone()
                 binding.l3.visible()
             }
+            var last = selected
 
             binding.m2.setOnClickListener {
-                Toast.makeText(binding.root.context, "$layoutPosition", Toast.LENGTH_SHORT).show()
                 if (data.isOpen) {
 
                     when (selected) {
                         -1 -> {
-                            data.clicked = !data.clicked
+                            data.selected = !data.selected
                             selected = layoutPosition
+                            last = selected
                         }
 
-                        layoutPosition -> {
-                            data.clicked = !data.clicked
-                            selected = layoutPosition
-                        }
+//                        layoutPosition -> {
+//                            data.selected = !data.selected
+//                            selected = layoutPosition
+//                        }
 
                         else -> {
-                            list[selected].clicked = false
-                            list[layoutPosition].clicked = true
+                            list[layoutPosition].selected = true
+                            list[selected].selected = false
+                            last = selected
+                            list[layoutPosition].selected = true
                             selected = layoutPosition
                         }
                     }
 
-                    itemClickListener?.invoke(true, c, layoutPosition)
+                    itemClickListener?.invoke(true, data.count, layoutPosition, data.limit,last)
 
                 } else {
-
-//                    sharedPref.save(
-//                        layoutPosition.toString(),
-//                        c + 1
-//                    )
-                    if (c >= 4) {
-                        data.isOpen = true
-                    }
-                    Log.d("sdfslkjslfjsldfkjs", "bindData: $c")
-                    itemClickListener?.invoke(false, c, layoutPosition)
+                    itemClickListener?.invoke(false, data.count, layoutPosition, data.limit,last)
                 }
                 notifyDataSetChanged()
             }
 
-            binding.count.text = "${c}/4"
+            binding.count.text = "${data.count}/${data.limit}"
         }
     }
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             ItemContactsBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
+                LayoutInflater.from(parent.context), parent, false
             )
         )
     }

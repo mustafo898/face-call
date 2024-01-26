@@ -1,73 +1,73 @@
 package dark.composer.fakecallapp.call
 
-import android.content.Intent
-import android.net.Uri
-import androidx.core.os.bundleOf
 import dark.composer.fakecallapp.BaseFragment
 import dark.composer.fakecallapp.R
+import dark.composer.fakecallapp.call.adapter.MoreContactsAdapter
 import dark.composer.fakecallapp.contacts.dialog.AgainDialog
 import dark.composer.fakecallapp.databinding.FragmentThanksForCallBinding
+import dark.composer.fakecallapp.utl.EncryptedSharedPref
 
 class ThanksForCallFragment :
     BaseFragment<FragmentThanksForCallBinding>(FragmentThanksForCallBinding::inflate) {
+
+    private val contactAdapter by lazy {
+        MoreContactsAdapter(requireContext())
+    }
+
     override fun onViewCreate() {
+        val sharedPref = EncryptedSharedPref(requireContext())
+
+        sharedPref.getList().forEach {
+            if (it.selected) {
+                binding.image.setImageResource(it.image)
+                binding.name.text = it.name
+            }
+        }
+
+        binding.rv.adapter = contactAdapter
+        contactAdapter.set(sharedPref.getList())
         binding.back.setOnClickListener {
-            navController.navigate(R.id.action_thanksForCallFragment_to_homeFragment)
+            navController.navigate(R.id.homeFragment)
         }
 
         binding.settings.setOnClickListener {
-            navController.navigate(R.id.action_thanksForCallFragment_to_settingsFragment)
+            navController.navigate(R.id.settingsFragment)
         }
 
         binding.l1.setOnClickListener {
-            navController.navigate(R.id.action_thanksForCallFragment_to_contactsFragment)
+            navController.navigate(R.id.contactsFragment)
+        }
+
+        binding.view.setOnClickListener{
+            navController.navigate(R.id.contactsFragment)
         }
 
         binding.game.setOnClickListener {
-            navController.navigate(
-                R.id.action_thanksForCallFragment_to_webViewFragment,
-                bundleOf("url" to "https://www.gamezop.com/?id=3178")
-            )
+            game()
         }
 
         binding.share.setOnClickListener {
-            val intent = Intent()
-            intent.action = Intent.ACTION_SEND
-            intent.putExtra(Intent.EXTRA_TEXT, "Hey Check out this Great app:")
-            intent.type = "text/plain"
-            startActivity(Intent.createChooser(intent, "Share To:"))
+            share()
         }
         binding.rate.setOnClickListener {
-            var url =
-                "https://play.google.com/store/apps/details?id=com.fakecallpoliceapplab"
-            if (!url.startsWith("http://") && !url.startsWith("https://")) {
-                url = "http://$url"
-            }
-
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            startActivity(browserIntent)
+            rate()
         }
         binding.callAgain.setOnClickListener {
             val dialog = AgainDialog(requireContext()) {
                 when (it) {
-                    0 -> {
-                        showAd()
-                        navController.navigate(R.id.action_thanksForCallFragment_to_chatFragment)
-                    }
-                    1 -> {
-                        showAd()
-                        navController.navigate(R.id.action_thanksForCallFragment_to_liveFragment)
-                    }
-                    2 -> navController.navigate(R.id.action_thanksForCallFragment_to_callFragment)
-                    3 -> navController.navigate(R.id.action_thanksForCallFragment_to_videoFragment)
+                    0 -> navController.navigate(R.id.chatFragment)
+                    1 -> navController.navigate(R.id.liveFragment)
+                    2 -> navController.navigate(R.id.callFragment)
+                    3 -> navController.navigate(R.id.videoFragment)
                 }
 
             }
             dialog.show()
         }
+
     }
 
     override fun onBackPressed() {
-        navController.navigate(R.id.action_thanksForCallFragment_to_homeFragment)
+
     }
 }

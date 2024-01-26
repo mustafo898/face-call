@@ -2,6 +2,7 @@ package dark.composer.fakecallapp.utl
 
 import android.content.Context
 import android.content.SharedPreferences
+import dark.composer.fakecallapp.R
 import dark.composer.fakecallapp.contacts.adapter.ContactModel
 
 class EncryptedSharedPref(context: Context) {
@@ -23,6 +24,7 @@ class EncryptedSharedPref(context: Context) {
     val Key4 = "3"
     val Key5 = "4"
     val Key6 = "5"
+
     fun setList(list: List<ContactModel>) {
         editor.putString("list", objectToJson(list))
         editor.apply()

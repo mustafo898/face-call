@@ -59,6 +59,7 @@
             android:layout_width="138dp"
             android:layout_height="138dp"
             android:padding="6dp"
+            android:id="@+id/image"
             android:src="@drawable/eagle"
             app:shapeAppearanceOverlay="@style/Circular"
             app:strokeColor="@color/white"
@@ -245,7 +246,7 @@
                 android:layout_height="wrap_content"
                 android:maxHeight="4dip"
                 android:minHeight="4dip"
-                android:progress="0"
+                android:progress="1"
                 android:max="3"
                 android:progressDrawable="@drawable/sb_progress_drawable"
                 android:thumb="@drawable/sb_thumb" />

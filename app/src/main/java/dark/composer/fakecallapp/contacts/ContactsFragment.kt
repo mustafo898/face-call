@@ -1,40 +1,58 @@
 package dark.composer.fakecallapp.contacts
 
 import android.util.Log
-import android.widget.Toast
+import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
+import com.google.android.gms.ads.rewarded.ServerSideVerificationOptions
 import dark.composer.fakecallapp.BaseFragment
 import dark.composer.fakecallapp.R
+import dark.composer.fakecallapp.contacts.adapter.ContactModel
 import dark.composer.fakecallapp.contacts.adapter.ContactsAdapter
 import dark.composer.fakecallapp.contacts.dialog.ADDialog
 import dark.composer.fakecallapp.databinding.FragmentContactsBinding
 import dark.composer.fakecallapp.utl.EncryptedSharedPref
 
-class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsBinding::inflate),
-    ADDialog.DeleteChekListener {
-    private var rewardedAd: RewardedAd? = null
+class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsBinding::inflate) {
     private lateinit var sharedPref: EncryptedSharedPref
+    private var rewardedAd: RewardedAd? = null
 
     private val contactAdapter by lazy {
         ContactsAdapter(requireContext())
     }
 
+    private lateinit var dialog: ADDialog
+
+    private lateinit var list: List<ContactModel>
+
+    private val TAG = "rororororor"
+    override fun onBackPressed() {
+
+    }
+
     override fun onViewCreate() {
-        loadRewardedAd1()
         sharedPref = EncryptedSharedPref(requireContext())
 
+        list = sharedPref.getList()
 
         binding.rv.adapter = contactAdapter
 
+        loadRewardAd()
 
-        contactAdapter.setItemClickListener { isOpen, count, pos ->
+        contactAdapter.setItemClickListener { isOpen, count, pos, limit, last ->
             if (!isOpen) {
-                val dialog = ADDialog(requireContext())
-                dialog.getCount(count, pos)
+                dialog = ADDialog(requireContext(), count, limit) { count1 ->
+                    showRewardAd(pos, count)
+                }
                 dialog.show()
+            } else {
+                list[pos].selected = true
+                list[pos].isOpen = true
+                list[last].selected = false
+                sharedPref.setList(list)
             }
         }
 
@@ -42,57 +60,81 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
             navController.navigate(R.id.action_contactsFragment_to_homeFragment)
         }
 
-//        val list = mutableListOf<ContactModel>()
-//        list.add(ContactModel("Character 1", "+1248754248", 0, true, false))
-//        list.add(ContactModel("Character 2", "+1248754248", 0, true, false))
-//        list.add(ContactModel("Character 3", "+1248754248", 0, false, false))
-//        list.add(ContactModel("Character 4", "+1248754248", 0, false, false))
-//        list.add(ContactModel("Character 5", "+1248754248", 0, false, false))
-//        list.add(ContactModel("Character 6", "+1248754248", 0, false, false))
-
         contactAdapter.set(sharedPref.getList())
     }
 
-    fun loadRewardedAd1() {
+    private fun loadRewardAd() {
         val adRequest = AdRequest.Builder().build()
-
-        Log.e("FABKFA", "loadRewardedAd: ${rewardedAd?.adUnitId}")
         RewardedAd.load(requireActivity(),
-            "ca-app-pub-7173802867165820/3073425903",
+            "ca-app-pub-3940256099942544/5224354917",
             adRequest,
             object : RewardedAdLoadCallback() {
-                override fun onAdLoaded(ad: RewardedAd) {
-                    rewardedAd = ad
-                    Toast.makeText(requireContext(), "ad's loaded", Toast.LENGTH_SHORT).show()
-                    Log.e("FABKFA", "onAdFailedToLoad: {ad's loaded}")
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    Log.d("slsjsfjdlkjhfd", adError.toString())
+                    rewardedAd = null
                 }
 
-                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                    // Handle the error
-                    Toast.makeText(requireContext(), "failed to load", Toast.LENGTH_SHORT).show()
-                    Log.e("FABKFA", "onAdFailedToLoad: ${loadAdError.cause}")
-                    Log.e("FABKFA", "onAdFailedToLoad: ${loadAdError.message}")
+                override fun onAdLoaded(ad: RewardedAd) {
+                    Log.d("slsjsfjdlkjhfd", "Ad was loaded. ${ad.responseInfo}")
+                    rewardedAd = ad
+                    val options = ServerSideVerificationOptions.Builder()
+                        .setCustomData("SAMPLE_CUSTOM_DATA_STRING").build()
+
+                    rewardedAd!!.setServerSideVerificationOptions(options)
                 }
             })
     }
 
-    fun showAd1(count: Int, post: Int) {
-        rewardedAd?.let {
-            it.show(requireActivity()) { rewardItem ->
-                // Handle the reward
-                var count1 = count
-                sharedPref.save(post.toString(), ++count1)
-                contactAdapter.update(count, post)
-                Toast.makeText(requireContext(), "ad's loaded", Toast.LENGTH_SHORT).show()
-            }
-        } ?: run {
-            // Ad not loaded, handle accordingly
-            loadRewardedAd1()
-            Toast.makeText(requireContext(), "ad not loaded", Toast.LENGTH_SHORT).show()
-        }
-    }
+    private fun showRewardAd(pos: Int, count: Int) {
+        if (rewardedAd != null) {
 
-    override fun onDeleteItem(count: Int, pos: Int) {
-        showAd1(count = count, post = pos)
+            rewardedAd?.let { ad ->
+                ad.show(requireActivity()) { rewardItem ->
+
+                    list[pos].count = count
+                    Log.d("sdsdfjskdfwewwe", "showRewardAd: ${list[pos]}")
+                    sharedPref.setList(list)
+                    contactAdapter.update(count, pos)
+                    rewardedAd = null
+                }
+            } ?: run {
+                Log.d("ssdoeldffjslkdfjslkj", "showRewardAd: not ")
+                loadRewardAd()
+            }
+
+            rewardedAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                override fun onAdClicked() {
+                    // Called when a click is recorded for an ad.
+                    Log.d(TAG, "Ad was clicked.")
+                }
+
+                override fun onAdDismissedFullScreenContent() {
+                    // Called when ad is dismissed.
+                    // Set the ad reference to null so you don't show the ad a second time.
+                    Log.d(TAG, "Ad dismissed fullscreen content.")
+                    rewardedAd = null
+                }
+
+                override fun onAdFailedToShowFullScreenContent(p0: AdError) {
+                    // Called when ad fails to show.
+                    Log.e(TAG, "Ad failed to show fullscreen content.")
+                    rewardedAd = null
+                }
+
+                override fun onAdImpression() {
+                    // Called when an impression is recorded for an ad.
+                    Log.d(TAG, "Ad recorded an impression.")
+                }
+
+                override fun onAdShowedFullScreenContent() {
+                    // Called when ad is shown.
+                    dialog.dismiss()
+                    Log.d(TAG, "Ad showed fullscreen content.")
+                }
+            }
+        } else {
+            Log.d("sdljfjksdjf", "showRewardAd: null")
+            loadRewardAd()
+        }
     }
 }

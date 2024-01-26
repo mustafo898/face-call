@@ -1,10 +1,12 @@
 package dark.composer.fakecallapp.video
 
 import android.hardware.Camera
+import android.os.Handler
 import android.view.SurfaceHolder
 import dark.composer.fakecallapp.BaseFragment
 import dark.composer.fakecallapp.R
 import dark.composer.fakecallapp.databinding.FragmentVideoAcceptBinding
+import dark.composer.fakecallapp.utl.EncryptedSharedPref
 import java.io.IOException
 
 class VideoAcceptFragment :
@@ -13,16 +15,47 @@ class VideoAcceptFragment :
     private var surfaceHolder: SurfaceHolder? = null
     private var camera: Camera? = null
 
+    private var seconds = 0
+
     override fun onViewCreate() {
         setupSurfaceHolder()
 
+        val sharedPref = EncryptedSharedPref(requireContext())
+
         binding.decline.setOnClickListener {
-            navController.navigate(R.id.action_videoAcceptFragment_to_endingCallFragment)
+            navController.navigate(R.id.endingCallFragment)
         }
 
-        val uri = "android.resource://" + requireActivity().packageName + "/" + R.raw.video22
+        var k = 0
+
+        sharedPref.getList().forEachIndexed { index, contactModel ->
+            if (contactModel.selected) k = index
+        }
+
+        val uri = when (k) {
+            0 -> "android.resource://" + requireActivity().packageName + "/" + R.raw.video_call_character_1
+            1 -> "android.resource://" + requireActivity().packageName + "/" + R.raw.video_call_character_2
+            2 -> "android.resource://" + requireActivity().packageName + "/" + R.raw.video_call_character_3
+            3 -> "android.resource://" + requireActivity().packageName + "/" + R.raw.video_call_character_4
+            else -> "android.resource://" + requireActivity().packageName + "/" + R.raw.video_call_character_1
+        }
 
         binding.video.setVideoPath(uri)
+
+        val handler = Handler()
+        handler.post(object : Runnable {
+            override fun run() {
+                val minutes = seconds % 3600 / 60
+                val secs = seconds % 60
+
+                val time = String.format("%02d:%02d", minutes, secs)
+                binding.time.text = time
+
+                seconds++
+
+                handler.postDelayed(this, 1000)
+            }
+        })
 
         binding.video.start()
         binding.video.setOnPreparedListener {
