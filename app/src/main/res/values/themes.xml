@@ -1,15 +1,21 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.FakeCallApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="android:windowBackground">@drawable/ic_splash</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!--        <item name="android:windowBackground">@drawable/ic_splash</item>-->
+<!--        <item name="android:windowTranslucentStatus">true</item>-->
+<!--        <item name="android:windowTranslucentNavigation">true</item>-->
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowLightStatusBar">true</item>
-
     </style>
+
+        <style name="Theme.SplashScreen" parent="Theme.Material3.DayNight.NoActionBar">
+            <item name="android:windowBackground">@drawable/splash_logo</item>
+            <item name="android:statusBarColor">@color/white</item>
+            <item name="android:navigationBarColor">@color/white</item>
+        </style>
 
     <style name="Theme.FakeCallApp" parent="Base.Theme.FakeCallApp" />
 

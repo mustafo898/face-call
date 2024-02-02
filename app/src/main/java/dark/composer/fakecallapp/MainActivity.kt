@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         )
         setContentView(binding.root)
 
-        hideNavigationBar()
+//        hideNavigationBar()
 
         MobileAds.initialize(
             this

@@ -17,9 +17,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
         android:screenOrientation="portrait"
-        android:theme="@style/Theme.FakeCallApp"
+        android:supportsRtl="true"
+        android:theme="@style/Base.Theme.FakeCallApp"
         tools:targetApi="31">
 
         <meta-data
@@ -28,14 +28,19 @@
         <!--            android:value="ca-app-pub-3940256099942544~6300978111"-->
 
         <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:fitsSystemWindows="true">
+            android:name=".SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:fitsSystemWindows="true">
+
         </activity>
     </application>
 
