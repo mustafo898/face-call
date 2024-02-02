@@ -28,7 +28,15 @@ class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::infl
     private var seconds = 0
     private lateinit var handler: Handler
     private var count = 0
+    val list = ArrayList<LiveModel>()
 
+
+    private val messageRunnable = object : Runnable {
+        override fun run() {
+            addItemsWithDelay(list,0)
+            handler.postDelayed(this, 3000) // Add a message every 3 seconds (adjust as needed)
+        }
+    }
     override fun onViewCreate() {
 
 //        val result = checkPermission()
@@ -40,7 +48,6 @@ class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::infl
 
         binding.rv.adapter = liveAdapter
 
-        val list = ArrayList<LiveModel>()
 
         list.add(LiveModel("Cool that I found this!", R.drawable.main, "Bob"))
         list.add(LiveModel("Hope to see you again soon!", R.drawable.c2, "Bugs"))
@@ -52,26 +59,17 @@ class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::infl
         list.add(LiveModel("Hi", R.drawable.c4, "Luna"))
 
 
-//        lifecycleScope.launch {
-//            delay(2000)
-//            list.forEach {
-//                lifecycleScope.launch {
-//                    liveAdapter.add(it)
-//                    delay(2000)
-//                }
-//            }
-//        }
-
-
         binding.game.setOnClickListener {
             game()
         }
+
+        handler.post(messageRunnable)
+
         addItemsWithDelay(list, 0)
 
         changeTextWithDelay()
 
         binding.decline.setOnClickListener {
-//            showAd()
             navController.navigate(R.id.endingCallFragment)
         }
 

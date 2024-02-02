@@ -1,6 +1,7 @@
 package dark.composer.fakecallapp.contacts
 
 import android.util.Log
+import android.widget.Toast
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -77,10 +78,10 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
                 override fun onAdLoaded(ad: RewardedAd) {
                     Log.d("slsjsfjdlkjhfd", "Ad was loaded. ${ad.responseInfo}")
                     rewardedAd = ad
-                    val options = ServerSideVerificationOptions.Builder()
-                        .setCustomData("SAMPLE_CUSTOM_DATA_STRING").build()
-
-                    rewardedAd!!.setServerSideVerificationOptions(options)
+//                    val options = ServerSideVerificationOptions.Builder()
+//                        .setCustomData("SAMPLE_CUSTOM_DATA_STRING").build()
+//
+//                    rewardedAd!!.setServerSideVerificationOptions(options)
                 }
             })
     }
@@ -98,42 +99,40 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
                 }
             } ?: run {
                 Log.d("ssdoeldffjslkdfjslkj", "showRewardAd: not ")
-                loadRewardAd()
             }
 
             rewardedAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
                 override fun onAdClicked() {
-                    // Called when a click is recorded for an ad.
-                    Log.d(TAG, "Ad was clicked.")
                 }
 
                 override fun onAdDismissedFullScreenContent() {
-                    // Called when ad is dismissed.
-                    // Set the ad reference to null so you don't show the ad a second time.
-                    Log.d(TAG, "Ad dismissed fullscreen content.")
                     rewardedAd = null
+                    loadRewardAd()
+                    dialog.def()
+                    if (list[pos].limit == list[pos].count)
+                        dialog.dismiss()
+                    else{
+                        dialog.set(list[pos].count,list[pos].limit)
+                    }
                 }
 
                 override fun onAdFailedToShowFullScreenContent(p0: AdError) {
-                    // Called when ad fails to show.
-                    Log.e(TAG, "Ad failed to show fullscreen content.")
                     rewardedAd = null
                 }
 
                 override fun onAdImpression() {
-                    // Called when an impression is recorded for an ad.
                     Log.d(TAG, "Ad recorded an impression.")
                 }
 
                 override fun onAdShowedFullScreenContent() {
-                    // Called when ad is shown.
-                    dialog.dismiss()
                     Log.d(TAG, "Ad showed fullscreen content.")
                 }
             }
         } else {
-            Log.d("sdljfjksdjf", "showRewardAd: null")
+            Toast.makeText(requireContext(), "Try again", Toast.LENGTH_SHORT).show()
+            dialog.def()
             loadRewardAd()
         }
+
     }
 }

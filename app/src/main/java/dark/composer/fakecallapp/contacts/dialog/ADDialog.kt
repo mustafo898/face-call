@@ -19,6 +19,15 @@ class ADDialog(
 ) : AlertDialog(context) {
     private val binding = AddDialogBinding.inflate(layoutInflater)
 
+    fun def(){
+        binding.t2.visible()
+        binding.progress.gone()
+    }
+
+    fun set(count: Int,limit: Int){
+        binding.t3.text = "$count/$limit"
+    }
+
     init {
         setView(binding.root)
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

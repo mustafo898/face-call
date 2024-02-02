@@ -73,8 +73,13 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(FragmentChatBinding::infl
             game()
         }
 
+        var name = ""
+        sharedPref.getList().forEach {
+            if (it.selected) name = it.name
+        }
+
         rewriteList.add(ChatModel("Hi", true, "Hi! Welcome to my chat"))
-        rewriteList.add(ChatModel("What's your name", true, "I'm name"))
+        rewriteList.add(ChatModel("What's your name", true, "I'm $name"))
         rewriteList.add(ChatModel("How are you?", true, "I'm fine, thank you"))
         rewriteList.add(ChatModel("How old are you?", true, "I'm 25 years old"))
         rewriteList.add(ChatModel("Nice to meet you", true, "Me too"))

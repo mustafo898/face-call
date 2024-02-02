@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -15,14 +14,12 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.ads.AdError
-import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import dark.composer.fakecallapp.contacts.dialog.ADDialog
 import dark.composer.fakecallapp.databinding.ActivityMainBinding
 
 
@@ -46,15 +43,15 @@ class MainActivity : AppCompatActivity() {
         )
         setContentView(binding.root)
 
+        hideNavigationBar()
 
         MobileAds.initialize(
             this
         ) { }
 
-        val adRequest: AdRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
-
         loadInterAd()
+
+        loadBanner()
 
         checkPermission()
 
@@ -65,26 +62,52 @@ class MainActivity : AppCompatActivity() {
         navController.enableOnBackPressed(true)
 
         navController.addOnDestinationChangedListener { _, destination, argument ->
-            if (destination.id != R.id.splashFragment && destination.id != R.id.homeStartFragment) show()
+            if (destination.id != R.id.splashFragment && destination.id != R.id.homeStartFragment && destination.id != R.id.acceptCallFragment && destination.id != R.id.videoAcceptFragment && destination.id != R.id.liveFragment) show()
+
+            if (destination.id != R.id.chatFragment){
+                loadBanner()
+                binding.adView.visible()
+            }else{
+                binding.adView.destroy()
+                binding.adView.gone()
+            }
         }
+    }
+
+    private fun loadBanner(){
+        val adRequest: AdRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
+    }
+
+    private fun hideNavigationBar() {
+        val decorView = window.decorView
+        var uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
+        uiOptions = uiOptions or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        decorView.systemUiVisibility = uiOptions
     }
 
     private fun show() {
         if (interstitialAd != null) {
             interstitialAd!!.show(this)
-            interstitialAd!!.fullScreenContentCallback = object : FullScreenContentCallback(){
+            interstitialAd!!.fullScreenContentCallback = object : FullScreenContentCallback() {
                 override fun onAdClicked() {
                     Log.d("skhdgfksjdwewiur", "onAdClicked: click")
                     super.onAdClicked()
                 }
 
                 override fun onAdDismissedFullScreenContent() {
-                    Log.d("skhdgfksjdwewiur", "onAdDismissedFullScreenContent: onAdDismissedFullScreenContent")
+                    Log.d(
+                        "skhdgfksjdwewiur",
+                        "onAdDismissedFullScreenContent: onAdDismissedFullScreenContent"
+                    )
                     interstitialAd = null
                 }
 
                 override fun onAdFailedToShowFullScreenContent(p0: AdError) {
-                    Log.d("skhdgfksjdwewiur", "onAdFailedToShowFullScreenContent: ${p0.message}\n${p0.cause}\n${p0.code}\n")
+                    Log.d(
+                        "skhdgfksjdwewiur",
+                        "onAdFailedToShowFullScreenContent: ${p0.message}\n${p0.cause}\n${p0.code}\n"
+                    )
                     interstitialAd = null
                 }
 
@@ -94,7 +117,10 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onAdShowedFullScreenContent() {
-                    Log.d("skhdgfksjdwewiur", "onAdShowedFullScreenContent: onAdShowedFullScreenContent")
+                    Log.d(
+                        "skhdgfksjdwewiur",
+                        "onAdShowedFullScreenContent: onAdShowedFullScreenContent"
+                    )
                     super.onAdShowedFullScreenContent()
                 }
             }
@@ -133,8 +159,7 @@ class MainActivity : AppCompatActivity() {
             val permissionsNotGranted = ArrayList<String>()
             for (permission in neededPermissions) {
                 if (ContextCompat.checkSelfPermission(
-                        this,
-                        permission
+                        this, permission
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
                     permissionsNotGranted.add(permission)
