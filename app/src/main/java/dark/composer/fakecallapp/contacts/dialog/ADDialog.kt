@@ -19,9 +19,16 @@ class ADDialog(
 ) : AlertDialog(context) {
     private val binding = AddDialogBinding.inflate(layoutInflater)
 
+    fun loading(){
+        binding.t2.gone()
+        binding.progress.visible()
+        binding.ad.isClickable = false
+    }
+
     fun def(){
         binding.t2.visible()
         binding.progress.gone()
+        binding.ad.isClickable = true
     }
 
     fun set(count: Int,limit: Int){
@@ -40,8 +47,6 @@ class ADDialog(
         }
 
         binding.ad.setOnClickListener {
-            binding.progress.visible()
-            binding.t2.gone()
             onItemClick.invoke(count)
         }
     }
