@@ -9,6 +9,7 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.android.gms.ads.rewarded.ServerSideVerificationOptions
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback
 import dark.composer.fakecallapp.BaseFragment
 import dark.composer.fakecallapp.R
 import dark.composer.fakecallapp.contacts.adapter.ContactModel
@@ -28,7 +29,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
     private lateinit var dialog: ADDialog
 
     private lateinit var list: List<ContactModel>
-
+    private var isLoading = false
     private val TAG = "rororororor"
     override fun onBackPressed() {
 
@@ -41,13 +42,15 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
 
         binding.rv.adapter = contactAdapter
 
-        loadRewardAd()
+//        loadRewardAd()
 
         contactAdapter.setItemClickListener { isOpen, count, pos, limit, last ->
+            loadRewardAd()
             if (!isOpen) {
                 dialog = ADDialog(requireContext(), count, limit) { count1 ->
                     showRewardAd(pos, count1)
                 }
+                dialog.loading()
                 dialog.show()
             } else {
                 list[pos].selected = true
@@ -65,6 +68,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
     }
 
     private fun loadRewardAd() {
+
         val adRequest = AdRequest.Builder().build()
         RewardedAd.load(requireActivity(),
             "ca-app-pub-3940256099942544/5224354917",
@@ -133,6 +137,5 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
             dialog.def()
             loadRewardAd()
         }
-
     }
 }
