@@ -5,9 +5,11 @@ import android.content.pm.PackageManager
 import android.hardware.Camera
 import android.os.Build
 import android.os.Handler
+import android.util.Log
 import android.view.SurfaceHolder
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import dark.composer.fakecallapp.BaseFragment
 import dark.composer.fakecallapp.R
 import dark.composer.fakecallapp.databinding.FragmentLiveBinding
@@ -28,15 +30,18 @@ class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::infl
     private var seconds = 0
     private lateinit var handler: Handler
     private var count = 0
-    val list = ArrayList<LiveModel>()
+
+    //    val list = ArrayList<LiveModel>()
+    val list = HashSet<LiveModel>()
 
 
     private val messageRunnable = object : Runnable {
         override fun run() {
-            addItemsWithDelay(list,0)
+            addItemsWithDelay(list, 1)
             handler.postDelayed(this, 3000) // Add a message every 3 seconds (adjust as needed)
         }
     }
+
     override fun onViewCreate() {
 
 //        val result = checkPermission()
@@ -46,7 +51,18 @@ class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::infl
 
         handler = Handler()
 
-        binding.rv.adapter = liveAdapter
+        binding.rv.apply {
+            val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+                .apply {
+                    stackFromEnd = true
+                    reverseLayout = false
+                }
+
+
+            this.layoutManager = layoutManager
+
+            adapter = liveAdapter
+        }
 
 
         list.add(LiveModel("Cool that I found this!", R.drawable.main, "Bob"))
@@ -63,7 +79,7 @@ class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::infl
             game()
         }
 
-        handler.post(messageRunnable)
+//        handler.post(messageRunnable)
 
         addItemsWithDelay(list, 0)
 
@@ -89,20 +105,42 @@ class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::infl
         })
     }
 
-    private fun addItemsWithDelay(items: List<LiveModel>, index: Int) {
-        if (index < items.size) {
-            // Add item to the list after 3 seconds
-            handler.postDelayed({
-                val newItem = items[index]
-                liveAdapter.add(newItem)
+    private fun addItemsWithDelay(items: HashSet<LiveModel>, index: Int) {
+        val mylist: ArrayList<LiveModel> = items.toList() as ArrayList<LiveModel>
+        if (items.size - 1 == index) {
+            addItemsWithDelay(list, 0)
+        } else {
+            if (index < items.size) {
 
-                // Print the updated list
+                // Add item to the list after 3 seconds
+                handler.postDelayed({
+                    val newItem = mylist[index]
 
-                // Schedule the next item after the delay
-                addItemsWithDelay(items, index + 1)
-                binding.rv.smoothScrollToPosition(items.lastIndex)
+                    Log.e("LNDSAKJDNA", "addItemsWithDelay: ${mylist[index]}")
+                    liveAdapter.add(newItem)
 
-            }, 2000)
+                    // Schedule the next item after the delay
+                    addItemsWithDelay(items, index + 1)
+                    binding.rv.smoothScrollToPosition(liveAdapter.itemCount - 1)
+
+
+//                if (mylist[index].text.length == 2) {
+//                    Log.e("LNDSAKJDNA", "addItemsWithDelay: hi keldi")
+//                    binding.rv.smoothScrollToPosition(mylist.lastIndex)
+//                    handler.removeCallbacksAndMessages(null)
+//                }
+                }, 1500)
+
+            }
+//            handler.postDelayed({
+//                var old = items[index - 1]
+//                if (newItem.text.length != old.text.length) {
+//
+//
+//                }
+//
+//
+//            }, 2000)
         }
     }
 

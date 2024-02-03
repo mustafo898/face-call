@@ -71,12 +71,12 @@
                     android:src="@drawable/eyes" />
 
                 <TextView
+                    android:id="@+id/count"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:fontFamily="@font/inter_medium"
                     android:text="326"
-                    android:id="@+id/count"
                     android:textColor="@color/white" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -85,58 +85,58 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-<!--    <androidx.appcompat.widget.LinearLayoutCompat-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:elevation="2dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="@id/l1"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="@id/l1">-->
+    <!--    <androidx.appcompat.widget.LinearLayoutCompat-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginEnd="16dp"-->
+    <!--        android:elevation="2dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@id/l1"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="@id/l1">-->
 
-<!--        <ImageView-->
-<!--            android:id="@+id/like"-->
-<!--            android:layout_width="40dp"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:layout_gravity="end"-->
-<!--            android:background="?attr/selectableItemBackgroundBorderless"-->
-<!--            android:clickable="true"-->
-<!--            android:focusable="true"-->
-<!--            android:padding="2dp"-->
-<!--            android:src="@drawable/unfavorite" />-->
+    <!--        <ImageView-->
+    <!--            android:id="@+id/like"-->
+    <!--            android:layout_width="40dp"-->
+    <!--            android:layout_height="40dp"-->
+    <!--            android:layout_gravity="end"-->
+    <!--            android:background="?attr/selectableItemBackgroundBorderless"-->
+    <!--            android:clickable="true"-->
+    <!--            android:focusable="true"-->
+    <!--            android:padding="2dp"-->
+    <!--            android:src="@drawable/unfavorite" />-->
 
-<!--        <ImageView-->
-<!--            android:id="@+id/rate"-->
-<!--            android:layout_width="40dp"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:layout_gravity="end"-->
-<!--            android:layout_marginStart="8dp"-->
-<!--            android:background="?attr/selectableItemBackgroundBorderless"-->
-<!--            android:clickable="true"-->
-<!--            android:focusable="true"-->
-<!--            android:padding="2dp"-->
-<!--            android:src="@drawable/unrate" />-->
+    <!--        <ImageView-->
+    <!--            android:id="@+id/rate"-->
+    <!--            android:layout_width="40dp"-->
+    <!--            android:layout_height="40dp"-->
+    <!--            android:layout_gravity="end"-->
+    <!--            android:layout_marginStart="8dp"-->
+    <!--            android:background="?attr/selectableItemBackgroundBorderless"-->
+    <!--            android:clickable="true"-->
+    <!--            android:focusable="true"-->
+    <!--            android:padding="2dp"-->
+    <!--            android:src="@drawable/unrate" />-->
 
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="8dp"-->
-<!--            android:background="@drawable/back_ring"-->
-<!--            android:clickable="true"-->
-<!--            android:focusable="true"-->
-<!--            android:foreground="?attr/selectableItemBackgroundBorderless"-->
-<!--            android:gravity="center"-->
-<!--            android:text="😆"-->
-<!--            android:textSize="22sp" />-->
+    <!--        <TextView-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginStart="8dp"-->
+    <!--            android:background="@drawable/back_ring"-->
+    <!--            android:clickable="true"-->
+    <!--            android:focusable="true"-->
+    <!--            android:foreground="?attr/selectableItemBackgroundBorderless"-->
+    <!--            android:gravity="center"-->
+    <!--            android:text="😆"-->
+    <!--            android:textSize="22sp" />-->
 
-<!--    </androidx.appcompat.widget.LinearLayoutCompat>-->
+    <!--    </androidx.appcompat.widget.LinearLayoutCompat>-->
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
         android:layout_width="0dp"
         android:layout_height="230dp"
         android:elevation="2dp"
         android:orientation="vertical"
-        android:id="@+id/rv"
         android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="@id/game"

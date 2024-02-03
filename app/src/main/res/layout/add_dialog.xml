@@ -96,22 +96,23 @@
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="12dp">
 
+
                     <ProgressBar
                         android:id="@+id/progress"
-                        android:visibility="gone"
-                        android:layout_gravity="center"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:indeterminateTint="@color/white"/>
+                        android:layout_gravity="center"
+                        android:indeterminateTint="@color/white" />
 
                     <TextView
                         android:id="@+id/t2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|center_vertical"
                         android:layout_marginStart="8dp"
                         android:fontFamily="@font/inter_medium"
                         android:text="Watch AD"
+                        android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 

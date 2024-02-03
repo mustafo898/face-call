@@ -64,17 +64,17 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, argument ->
             if (destination.id != R.id.splashFragment && destination.id != R.id.homeStartFragment && destination.id != R.id.acceptCallFragment && destination.id != R.id.videoAcceptFragment && destination.id != R.id.liveFragment) show()
 
-            if (destination.id != R.id.chatFragment){
+            if (destination.id != R.id.chatFragment) {
                 loadBanner()
                 binding.adView.visible()
-            }else{
+            } else {
                 binding.adView.destroy()
                 binding.adView.gone()
             }
         }
     }
 
-    private fun loadBanner(){
+    private fun loadBanner() {
         val adRequest: AdRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
     }

@@ -5,7 +5,9 @@ import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.util.Log
+import android.os.Bundle
+import androidx.lifecycle.LifecycleOwner
+import dark.composer.fakecallapp.contacts.isAdLoaded
 import dark.composer.fakecallapp.databinding.AddDialogBinding
 import dark.composer.fakecallapp.gone
 import dark.composer.fakecallapp.visible
@@ -15,23 +17,24 @@ class ADDialog(
     private val context: Context,
     private var count: Int,
     private var limit: Int,
-    private val onItemClick: ((Int) -> Unit)
-) : AlertDialog(context) {
+    private val onItemClick: ((Int) -> Unit),
+
+    ) : AlertDialog(context) {
     private val binding = AddDialogBinding.inflate(layoutInflater)
 
-    fun loading(){
+    fun loading() {
         binding.t2.gone()
         binding.progress.visible()
         binding.ad.isClickable = false
     }
 
-    fun def(){
+    fun def() {
         binding.t2.visible()
         binding.progress.gone()
         binding.ad.isClickable = true
     }
 
-    fun set(count: Int,limit: Int){
+    fun set(count: Int, limit: Int) {
         binding.t3.text = "$count/$limit"
     }
 
@@ -47,7 +50,29 @@ class ADDialog(
         }
 
         binding.ad.setOnClickListener {
-            onItemClick.invoke(count)
+            if (a)
+                onItemClick.invoke(count)
+        }
+
+    }
+
+    private var a = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        isAdLoaded.observe(context as LifecycleOwner) {
+            if (!it) {
+                a = false
+                binding.progress.visible()
+                binding.t2.gone()
+                binding.ad.isClickable = false
+            } else {
+                a = true
+                binding.t2.visible()
+                binding.progress.gone()
+                binding.ad.isClickable = true
+            }
         }
     }
 }

@@ -2,14 +2,13 @@ package dark.composer.fakecallapp.contacts
 
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
-import com.google.android.gms.ads.rewarded.ServerSideVerificationOptions
-import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback
 import dark.composer.fakecallapp.BaseFragment
 import dark.composer.fakecallapp.R
 import dark.composer.fakecallapp.contacts.adapter.ContactModel
@@ -43,7 +42,6 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
         binding.rv.adapter = contactAdapter
 
 //        loadRewardAd()
-
         contactAdapter.setItemClickListener { isOpen, count, pos, limit, last ->
             loadRewardAd()
             if (!isOpen) {
@@ -68,6 +66,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
     }
 
     private fun loadRewardAd() {
+        isAdLoaded.value = false
 
         val adRequest = AdRequest.Builder().build()
         RewardedAd.load(requireActivity(),
@@ -77,11 +76,13 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     Log.d("slsjsfjdlkjhfd", adError.toString())
                     rewardedAd = null
+                    isAdLoaded.value = false
                 }
 
                 override fun onAdLoaded(ad: RewardedAd) {
                     Log.d("slsjsfjdlkjhfd", "Ad was loaded. ${ad.responseInfo}")
                     rewardedAd = ad
+                    isAdLoaded.value = true
 //                    val options = ServerSideVerificationOptions.Builder()
 //                        .setCustomData("SAMPLE_CUSTOM_DATA_STRING").build()
 //
@@ -105,6 +106,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
                 Log.d("ssdoeldffjslkdfjslkj", "showRewardAd: not ")
             }
 
+
             rewardedAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
                 override fun onAdClicked() {
                 }
@@ -113,10 +115,9 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
                     rewardedAd = null
                     loadRewardAd()
                     dialog.def()
-                    if (list[pos].limit == list[pos].count)
-                        dialog.dismiss()
-                    else{
-                        dialog.set(list[pos].count,list[pos].limit)
+                    if (list[pos].limit == list[pos].count) dialog.dismiss()
+                    else {
+                        dialog.set(list[pos].count, list[pos].limit)
                     }
                 }
 
@@ -139,3 +140,5 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
         }
     }
 }
+
+val isAdLoaded = MutableLiveData<Boolean>()

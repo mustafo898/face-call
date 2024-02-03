@@ -46,64 +46,8 @@ abstract class BaseFragment<VB : ViewBinding>(
                 return@setOnKeyListener isUseBackPress
             } else return@setOnKeyListener false
         }
-
-//        loadInterAd()
     }
 
-//    private fun show() {
-//        if (interstitialAd != null) {
-//            Toast.makeText(requireActivity(), "load", Toast.LENGTH_SHORT).show()
-//            interstitialAd!!.show(requireActivity())
-//            interstitialAd!!.fullScreenContentCallback = object : FullScreenContentCallback(){
-//                override fun onAdClicked() {
-//                    Log.d("skhdgfksjdwewiur", "onAdClicked: click")
-//                    super.onAdClicked()
-//                }
-//
-//                override fun onAdDismissedFullScreenContent() {
-//                    Log.d("skhdgfksjdwewiur", "onAdDismissedFullScreenContent: onAdDismissedFullScreenContent")
-//                    interstitialAd = null
-//                }
-//
-//                override fun onAdFailedToShowFullScreenContent(p0: AdError) {
-//                    Log.d("skhdgfksjdwewiur", "onAdFailedToShowFullScreenContent: ${p0.message}\n${p0.cause}\n${p0.code}\n")
-//                    interstitialAd = null
-//                }
-//
-//                override fun onAdImpression() {
-//                    Log.d("skhdgfksjdwewiur", "onAdImpression: onAdImpression")
-//                    super.onAdImpression()
-//                }
-//
-//                override fun onAdShowedFullScreenContent() {
-//                    Log.d("skhdgfksjdwewiur", "onAdShowedFullScreenContent: onAdShowedFullScreenContent")
-//                    super.onAdShowedFullScreenContent()
-//                }
-//            }
-//            interstitialAd = null
-//        } else {
-//            loadInterAd()
-//            Toast.makeText(requireContext(), "null", Toast.LENGTH_SHORT).show()
-//        }
-//    }
-
-//    private fun loadInterAd() {
-//        val adRequest = AdRequest.Builder().build()
-//
-//        InterstitialAd.load(requireActivity(),
-//            "ca-app-pub-3940256099942544/1033173712",
-//            adRequest,
-//            object : InterstitialAdLoadCallback() {
-//                override fun onAdLoaded(p0: InterstitialAd) {
-//                    interstitialAd = p0
-//                }
-//
-//                override fun onAdFailedToLoad(p0: LoadAdError) {
-//                    Log.d("rrttyyyuoopw", "onAdFailedToLoad: ${p0.message}\n${p0.cause}")
-//                }
-//            })
-//
-//    }
 
     open fun onBackPressed() {
         isUseBackPress = false
