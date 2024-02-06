@@ -16,19 +16,21 @@ import dark.composer.fakecallapp.visible
 class ADDialog(
     private val context: Context,
     private var count: Int,
-    private var limit: Int,
+    private val limit: Int,
     private val onItemClick: ((Int) -> Unit),
 
     ) : AlertDialog(context) {
     private val binding = AddDialogBinding.inflate(layoutInflater)
 
     fun loading() {
+        a = false
         binding.t2.gone()
         binding.progress.visible()
         binding.ad.isClickable = false
     }
 
     fun def() {
+        a = true
         binding.t2.visible()
         binding.progress.gone()
         binding.ad.isClickable = true
@@ -51,7 +53,7 @@ class ADDialog(
 
         binding.ad.setOnClickListener {
             if (a)
-                onItemClick.invoke(count)
+                onItemClick.invoke(count++)
         }
 
     }
@@ -63,15 +65,9 @@ class ADDialog(
 
         isAdLoaded.observe(context as LifecycleOwner) {
             if (!it) {
-                a = false
-                binding.progress.visible()
-                binding.t2.gone()
-                binding.ad.isClickable = false
+                loading()
             } else {
-                a = true
-                binding.t2.visible()
-                binding.progress.gone()
-                binding.ad.isClickable = true
+                def()
             }
         }
     }

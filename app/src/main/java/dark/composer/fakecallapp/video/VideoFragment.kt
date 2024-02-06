@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.hardware.Camera
 import android.media.MediaPlayer
 import android.os.Build
+import android.util.Log
 import android.view.SurfaceHolder
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -28,12 +29,13 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(FragmentVideoBinding::i
 
         val sharedPref = EncryptedSharedPref(requireContext())
 
-        sharedPref.getList().forEachIndexed { i, s ->
-            if (s.isOpen) {
-                binding.image.setImageDrawable(ContextCompat.getDrawable(requireContext(), s.image))
-                binding.name.text = s.name
-                binding.number.text = s.number
-            }
+        sharedPref.getList().forEach { data ->
+            if (data.selected) {
+                binding.name.text = data.name
+                binding.number.text = data.number
+
+                binding.image.setImageResource(data.image)
+                }
         }
 
         if (!mediaPlayer.isPlaying) {

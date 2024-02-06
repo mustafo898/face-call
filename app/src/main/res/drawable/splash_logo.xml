@@ -2,8 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Background color -->
     <item>
-        <shape android:shape="rectangle">
-            <solid android:color="#FFFFFF" />
+        <shape android:shape="rectangle">/>
         </shape>
     </item>
 
@@ -13,12 +12,12 @@
         <shape android:shape="oval">
             <solid android:color="@android:color/transparent" /> <!-- Transparent circle -->
             <!-- You can adjust the size of the circle by modifying the size of the shape -->
-            <size android:width="100dp" android:height="100dp" /> <!-- Adjust size as needed -->
+             /> <!-- Adjust size as needed -->
         </shape>
     </item>
 
     <!-- Your drawable image -->
     <item
-        android:drawable="@drawable/yiu"
+        android:drawable="@drawable/kmtkdev"
         android:gravity="center" />
 </layer-list>

@@ -40,7 +40,6 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
         list = sharedPref.getList()
 
         binding.rv.adapter = contactAdapter
-
 //        loadRewardAd()
         contactAdapter.setItemClickListener { isOpen, count, pos, limit, last ->
             loadRewardAd()
@@ -98,6 +97,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
                 ad.show(requireActivity()) { rewardItem ->
 
                     list[pos].count = count
+                    Log.d("sweerrdlfksdjf", "onAdDismissedFullScreenContent: $count")
                     sharedPref.setList(list)
                     contactAdapter.update(count, pos)
                     rewardedAd = null
@@ -114,8 +114,10 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
                 override fun onAdDismissedFullScreenContent() {
                     rewardedAd = null
                     loadRewardAd()
-                    dialog.def()
-                    if (list[pos].limit == list[pos].count) dialog.dismiss()
+                    isLoading = false
+                    if (list[pos].limit == list[pos].count){
+                        dialog.dismiss()
+                    }
                     else {
                         dialog.set(list[pos].count, list[pos].limit)
                     }
