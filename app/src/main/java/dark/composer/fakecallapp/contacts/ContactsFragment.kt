@@ -69,7 +69,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
 
         val adRequest = AdRequest.Builder().build()
         RewardedAd.load(requireActivity(),
-            "ca-app-pub-3940256099942544/5224354917",
+            resources.getString(R.string.reward),
             adRequest,
             object : RewardedAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
@@ -95,11 +95,11 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
 
             rewardedAd?.let { ad ->
                 ad.show(requireActivity()) { rewardItem ->
-
-                    list[pos].count = count
+                    var d = count
+                    list[pos].count = d++
                     Log.d("sweerrdlfksdjf", "onAdDismissedFullScreenContent: $count")
                     sharedPref.setList(list)
-                    contactAdapter.update(count, pos)
+                    contactAdapter.update(d++, pos)
                     rewardedAd = null
                 }
             } ?: run {
@@ -119,7 +119,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(FragmentContactsB
                         dialog.dismiss()
                     }
                     else {
-                        dialog.set(list[pos].count, list[pos].limit)
+                        dialog.set(sharedPref.getList()[pos].count, list[pos].limit)
                     }
                 }
 

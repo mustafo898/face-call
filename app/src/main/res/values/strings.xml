@@ -3,5 +3,22 @@
     <string name="start_name">Dog Fake\nVideo Call</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    //links
     <string name="privacy"><u>by click to “continue” you agree to <i>Privacy</i></u></string>
+    <string name="rate">https://play.google.com/store/apps/details?id=com.fakecallpoliceapplab</string>
+    <string name="privacy_link">https://sites.google.com/view/fakecallpolicyalvarez/home</string>
+    <string name="license">https://creativecommons.org/publicdomain/zero/1.0/</string>
+
+    //ads
+    <string name="admob">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="reward">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="inter">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="banner">ca-app-pub-3940256099942544/6300978111</string>
+
+    //characters
+    <string name="char1">Bob</string>
+    <string name="char2">Bugs</string>
+    <string name="char3">Rocky</string>
+    <string name="char4">Luna</string>
 </resources>

@@ -62,7 +62,7 @@ abstract class BaseFragment<VB : ViewBinding>(
     }
 
     fun rate() {
-        var url = "https://play.google.com/store/apps/details?id=com.fakecallpoliceapplab"
+        var url = resources.getString(R.string.rate)
         if (!url.startsWith("http://") && !url.startsWith("https://")) {
             url = "http://$url"
         }
@@ -72,13 +72,13 @@ abstract class BaseFragment<VB : ViewBinding>(
     }
 
     fun privacy() {
-        val googleUri = Uri.parse("https://sites.google.com/view/fakecallpolicyalvarez/home")
+        val googleUri = Uri.parse(resources.getString(R.string.privacy_link))
         val googleIntent = Intent(Intent.ACTION_VIEW, googleUri)
         startActivity(googleIntent)
     }
 
     fun license() {
-        val googleUri = Uri.parse("https://creativecommons.org/publicdomain/zero/1.0/")
+        val googleUri = Uri.parse(resources.getString(R.string.license))
         val googleIntent = Intent(Intent.ACTION_VIEW, googleUri)
         startActivity(googleIntent)
     }
