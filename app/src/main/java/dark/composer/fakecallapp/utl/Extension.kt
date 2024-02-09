@@ -14,7 +14,7 @@ fun jsonToObject(data: String?): List<ContactModel> {
     val list = mutableListOf<ContactModel>()
     list.add(
         ContactModel(
-            R.string.char1.toString(),
+            R.string.char1,
             "+7 999 192 99 12",
             R.drawable.char1,
             0,
@@ -26,7 +26,7 @@ fun jsonToObject(data: String?): List<ContactModel> {
 
     list.add(
         ContactModel(
-            R.string.char2.toString(),
+            R.string.char2,
             "+7 999 525 66 77",
             R.drawable.c2,
             0,
@@ -37,7 +37,7 @@ fun jsonToObject(data: String?): List<ContactModel> {
     )
     list.add(
         ContactModel(
-            R.string.char3.toString(),
+            R.string.char3,
             "+7 999 777 53 53",
             R.drawable.c3,
             0,
@@ -48,7 +48,7 @@ fun jsonToObject(data: String?): List<ContactModel> {
     )
     list.add(
         ContactModel(
-            R.string.char4.toString(),
+            R.string.char4,
             "+7 999 925 75 87",
             R.drawable.c4,
             0,

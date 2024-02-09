@@ -20,7 +20,8 @@ class ThanksForCallFragment :
         sharedPref.getList().forEach {
             if (it.selected) {
                 binding.image.setImageResource(it.image)
-                binding.name.text = it.name
+                binding.name.setText(it.name)
+
             }
         }
 
@@ -38,7 +39,7 @@ class ThanksForCallFragment :
             navController.navigate(R.id.contactsFragment)
         }
 
-        binding.view.setOnClickListener{
+        binding.view.setOnClickListener {
             navController.navigate(R.id.contactsFragment)
         }
 

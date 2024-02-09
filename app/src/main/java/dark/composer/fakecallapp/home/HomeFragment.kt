@@ -1,9 +1,11 @@
 package dark.composer.fakecallapp.home
 
+import android.util.Log
 import dark.composer.fakecallapp.BaseFragment
 import dark.composer.fakecallapp.R
 import dark.composer.fakecallapp.databinding.FragmentHomeBinding
 import dark.composer.fakecallapp.utl.EncryptedSharedPref
+import kotlin.math.log
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
@@ -14,7 +16,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         sharedPref.getList().forEach {
             if (it.selected){
                 binding.image.setImageResource(it.image)
-                binding.name.text = it.name
+                binding.name.setText(it.name)
+                Log.d("otpiytlhngngd", "onViewCreate:")
             }
         }
 

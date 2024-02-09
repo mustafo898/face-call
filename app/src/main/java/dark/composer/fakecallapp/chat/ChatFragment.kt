@@ -57,7 +57,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(FragmentChatBinding::infl
         sharedPref.getList().forEach {
             if (it.selected) {
                 binding.image.setImageResource(it.image)
-                binding.name.text = it.name
+                binding.name.text = it.name.toString()
             }
         }
 
@@ -75,7 +75,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(FragmentChatBinding::infl
 
         var name = ""
         sharedPref.getList().forEach {
-            if (it.selected) name = it.name
+            if (it.selected) name = it.name.toString()
         }
 
         rewriteList.add(ChatModel("Hi", true, "Hi! Welcome to my chat"))

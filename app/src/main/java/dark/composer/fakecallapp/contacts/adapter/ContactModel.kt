@@ -3,7 +3,7 @@ package dark.composer.fakecallapp.contacts.adapter
 import androidx.annotation.DrawableRes
 
 data class ContactModel(
-    val name:String,
+    val name:Int,
     val number:String,
     @DrawableRes
     val image:Int,

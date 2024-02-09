@@ -33,7 +33,7 @@ class CallFragment : BaseFragment<FragmentCallBinding>(FragmentCallBinding::infl
 
         sharedPref.getList().forEach { data ->
             if (data.selected) {
-                binding.name.text = data.name
+                binding.name.setText(data.name)
                 binding.number.text = data.number
 
                 binding.image.setImageResource(data.image)
