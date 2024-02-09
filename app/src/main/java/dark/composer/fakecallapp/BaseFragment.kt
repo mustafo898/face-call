@@ -56,18 +56,14 @@ abstract class BaseFragment<VB : ViewBinding>(
     fun share() {
         val intent = Intent()
         intent.action = Intent.ACTION_SEND
-        intent.putExtra(Intent.EXTRA_TEXT, "Hey Check out this Great app:")
+        intent.putExtra(Intent.EXTRA_TEXT, resources.getString(R.string.share))
         intent.type = "text/plain"
         startActivity(Intent.createChooser(intent, "Share To:"))
     }
 
     fun rate() {
-        var url = resources.getString(R.string.rate)
-        if (!url.startsWith("http://") && !url.startsWith("https://")) {
-            url = "http://$url"
-        }
-
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        val url = Uri.parse(resources.getString(R.string.rate))
+        val browserIntent = Intent(Intent.ACTION_VIEW, url)
         startActivity(browserIntent)
     }
 
@@ -85,23 +81,14 @@ abstract class BaseFragment<VB : ViewBinding>(
 
 
     fun game() {
-        var url = "https://www.gamezop.com/?id=3178"
-        if (!url.startsWith("http://") && !url.startsWith("https://")) {
-            url = "http://$url"
-        }
-
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        val url = Uri.parse(resources.getString(R.string.play_games))
+        val browserIntent = Intent(Intent.ACTION_VIEW, url)
         startActivity(browserIntent)
     }
 
     fun moreGame() {
-        var url =
-            "https://play.google.com/store/apps/developer?id=Fake+Call+Chat+Pranks+by+AMYMOT+Dev"
-        if (!url.startsWith("http://") && !url.startsWith("https://")) {
-            url = "http://$url"
-        }
-
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        val url = Uri.parse(resources.getString(R.string.more_games))
+        val browserIntent = Intent(Intent.ACTION_VIEW, url)
         startActivity(browserIntent)
     }
 
