@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 
 data class ContactModel(
     val name:Int,
-    val number:String,
+    val number:Int,
     @DrawableRes
     val image:Int,
     var count:Int,

@@ -32,7 +32,7 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(FragmentVideoBinding::i
         sharedPref.getList().forEach { data ->
             if (data.selected) {
                 binding.name.setText(data.name)
-                binding.number.text = data.number
+                binding.number.setText(data.number)
 
                 binding.image.setImageResource(data.image)
                 }

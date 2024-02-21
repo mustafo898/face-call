@@ -28,7 +28,7 @@ class AcceptCallFragment :
                 k = i
                 binding.image.setImageDrawable(ContextCompat.getDrawable(requireContext(), s.image))
                 binding.name.setText(s.name)
-                binding.number.text = s.number
+                binding.number.setText(s.number)
             }
         }
 

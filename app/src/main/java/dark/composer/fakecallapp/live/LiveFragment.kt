@@ -31,16 +31,7 @@ class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::infl
     private lateinit var handler: Handler
     private var count = 0
 
-    //    val list = ArrayList<LiveModel>()
     val list = HashSet<LiveModel>()
-
-
-    private val messageRunnable = object : Runnable {
-        override fun run() {
-            addItemsWithDelay(list, 1)
-            handler.postDelayed(this, 3000) // Add a message every 3 seconds (adjust as needed)
-        }
-    }
 
     override fun onViewCreate() {
 
@@ -65,21 +56,19 @@ class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::infl
         }
 
 
-        list.add(LiveModel("Cool that I found this!", R.drawable.main, "Bob"))
-        list.add(LiveModel("Hope to see you again soon!", R.drawable.c2, "Bugs"))
-        list.add(LiveModel("How are you?", R.drawable.c3, "Rocky"))
-        list.add(LiveModel("I've heard so much about you", R.drawable.c4, "Luna"))
-        list.add(LiveModel("What's up?", R.drawable.main, "Bob"))
-        list.add(LiveModel("Thanks for having me", R.drawable.c2, "Bugs"))
-        list.add(LiveModel("How is everything?", R.drawable.c3, "Rocky"))
-        list.add(LiveModel("Hi", R.drawable.c4, "Luna"))
+        list.add(LiveModel("Cool that I found this!", R.drawable.main, R.string.char1))
+        list.add(LiveModel("Hope to see you again soon!", R.drawable.c2, R.string.char2))
+        list.add(LiveModel("How are you?", R.drawable.c3, R.string.char3))
+        list.add(LiveModel("I've heard so much about you", R.drawable.c4, R.string.char4))
+        list.add(LiveModel("What's up?", R.drawable.main, R.string.char1))
+        list.add(LiveModel("Thanks for having me", R.drawable.c2, R.string.char2))
+        list.add(LiveModel("How is everything?", R.drawable.c3, R.string.char3))
+        list.add(LiveModel("Hi", R.drawable.c4, R.string.char4))
 
 
         binding.game.setOnClickListener {
             game()
         }
-
-//        handler.post(messageRunnable)
 
         addItemsWithDelay(list, 0)
 
@@ -111,42 +100,18 @@ class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::infl
             addItemsWithDelay(list, 0)
         } else {
             if (index < items.size) {
-
-                // Add item to the list after 3 seconds
                 handler.postDelayed({
                     val newItem = mylist[index]
-
-                    Log.e("LNDSAKJDNA", "addItemsWithDelay: ${mylist[index]}")
                     liveAdapter.add(newItem)
-
-                    // Schedule the next item after the delay
                     addItemsWithDelay(items, index + 1)
                     binding.rv.smoothScrollToPosition(liveAdapter.itemCount - 1)
-
-
-//                if (mylist[index].text.length == 2) {
-//                    Log.e("LNDSAKJDNA", "addItemsWithDelay: hi keldi")
-//                    binding.rv.smoothScrollToPosition(mylist.lastIndex)
-//                    handler.removeCallbacksAndMessages(null)
-//                }
                 }, 1500)
-
             }
-//            handler.postDelayed({
-//                var old = items[index - 1]
-//                if (newItem.text.length != old.text.length) {
-//
-//
-//                }
-//
-//
-//            }, 2000)
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        // Remove any remaining callbacks from the handler
         handler.removeCallbacksAndMessages(null)
     }
 
@@ -157,10 +122,9 @@ class LiveFragment : BaseFragment<FragmentLiveBinding>(FragmentLiveBinding::infl
                 count += (20..10000).random()
                 binding.count.text = count.toString()
 
-                // Schedule the next text change after 500 seconds
-                handler.postDelayed(this, 750) // 750 seconds in milliseconds
+                handler.postDelayed(this, 750)
             }
-        }, 750) // Initial delay before the first text change
+        }, 750)
     }
 
     private fun checkPermission(): Boolean {

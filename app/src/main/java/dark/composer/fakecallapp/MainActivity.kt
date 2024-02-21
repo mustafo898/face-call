@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                 count += 1
                 sharedPref.save(COUNT_AD, count)
 
-                if (sharedPref.get(COUNT_AD, 0) % 3 == 0) show()
+                if (sharedPref.get(COUNT_AD, 0) % 4 == 0) show()
             }
 
             if (destination.id != R.id.chatFragment) {

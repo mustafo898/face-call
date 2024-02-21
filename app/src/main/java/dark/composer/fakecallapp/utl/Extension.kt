@@ -15,7 +15,7 @@ fun jsonToObject(data: String?): List<ContactModel> {
     list.add(
         ContactModel(
             R.string.char1,
-            "+7 999 192 99 12",
+            R.string.num1,
             R.drawable.char1,
             0,
             0,
@@ -27,7 +27,7 @@ fun jsonToObject(data: String?): List<ContactModel> {
     list.add(
         ContactModel(
             R.string.char2,
-            "+7 999 525 66 77",
+            R.string.num2,
             R.drawable.c2,
             0,
             2,
@@ -38,7 +38,7 @@ fun jsonToObject(data: String?): List<ContactModel> {
     list.add(
         ContactModel(
             R.string.char3,
-            "+7 999 777 53 53",
+            R.string.num3,
             R.drawable.c3,
             0,
             3,
@@ -49,7 +49,7 @@ fun jsonToObject(data: String?): List<ContactModel> {
     list.add(
         ContactModel(
             R.string.char4,
-            "+7 999 925 75 87",
+            R.string.num4,
             R.drawable.c4,
             0,
             4,

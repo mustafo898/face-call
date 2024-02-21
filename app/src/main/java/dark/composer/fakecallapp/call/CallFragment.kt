@@ -2,7 +2,6 @@ package dark.composer.fakecallapp.call
 
 import android.media.MediaPlayer
 import android.util.Log
-import android.widget.Toast
 import dark.composer.fakecallapp.BaseFragment
 import dark.composer.fakecallapp.R
 import dark.composer.fakecallapp.databinding.FragmentCallBinding
@@ -34,7 +33,7 @@ class CallFragment : BaseFragment<FragmentCallBinding>(FragmentCallBinding::infl
         sharedPref.getList().forEach { data ->
             if (data.selected) {
                 binding.name.setText(data.name)
-                binding.number.text = data.number
+                binding.number.setText(data.number)
 
                 binding.image.setImageResource(data.image)
 

@@ -51,7 +51,7 @@ class ContactsAdapter(val context: Context) : RecyclerView.Adapter<ContactsAdapt
         @RequiresApi(Build.VERSION_CODES.O)
         fun bindData(data: ContactModel) {
             binding.name.setText(data.name)
-            binding.number.text = data.number
+            binding.number.setText(data.number)
             binding.count.text = data.count.toString()
             binding.tick.setImageResource(if (data.selected) R.drawable.tick else R.drawable.round)
 

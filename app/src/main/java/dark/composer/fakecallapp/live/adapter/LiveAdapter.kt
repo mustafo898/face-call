@@ -37,7 +37,7 @@ class LiveAdapter(val context: Context) :
         @RequiresApi(Build.VERSION_CODES.O)
         fun bindData(data: LiveModel) {
             binding.image.setImageResource(data.image)
-            binding.name.text = data.name
+            binding.name.setText(data.name)
             binding.txt.text = data.text
         }
     }
